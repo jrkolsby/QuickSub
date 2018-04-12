@@ -1,18 +1,12 @@
 export const ACTIONS = {
-    PLAY: 'GO TIME',
-    STOP: 'NO MORE',
+    PLAYER_UPDATE: 'hi im carl',
     INSERT_CAPTION: 'new cap'
 }
 
-export const playVideo = () => {
+export const playerUpdate = (playerState) => {
     return {
-        type: ACTIONS.PLAY
-    }
-}
-
-export const stopVideo = () => {
-    return {
-        type: ACTIONS.STOP 
+        type: ACTIONS.PLAYER_UPDATE,
+        payload: playerState
     }
 }
 

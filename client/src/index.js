@@ -10,6 +10,9 @@ import {createStore, applyMiddleware} from 'redux'
 
 import registerServiceWorker from './registerServiceWorker';
 
+import "./style/reset.css"
+import "./style/index.css"
+
 let store = createStore(rootReducer);
 
 ReactDOM.render(

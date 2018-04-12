@@ -1,6 +1,7 @@
 import collections
 import contextlib
 import sys
+import os
 import wave
 import json
 
@@ -157,8 +158,9 @@ def main(args):
     segments = vad_collector(sample_rate, FRAME_DURATION, PADDING_DURATION, vad, frames)
 
     for i, segment in enumerate(segments):
-        path = 'chunk-%002d.wav\n' % (i,)
-        sys.stdout.write(path)
+        fileName = 'chunk-%002d.wav' % (i,)
+        path = os.path.dirname(args[1]) + "/" + fileName
+        sys.stdout.write(fileName + "\n")
         write_wave(path, segment, sample_rate)
 
 

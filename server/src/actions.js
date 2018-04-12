@@ -1,6 +1,6 @@
 const ACTIONS = {
-    ERROR: "uh oh!",
-    SUCCESS: "here's ur chunks"
+    ERROR: "ERROR",
+    SUCCESS: "SUCCESS"
 }
 
 global.error = (errorMessage) => {

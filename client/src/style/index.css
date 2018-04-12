@@ -3,3 +3,12 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+/* CUSTOM VIDEO STYLES */
+div.video-react-control-bar {
+
+}
+
+.video-react-video {
+    width: 800px;
+}

@@ -2,14 +2,10 @@ import {combineReducers} from 'redux'
 
 import nav from './nav'
 import editor from './editor'
-import importer from './importer'
-import exporter from './exporter'
 
 export default combineReducers({
     nav,
-    editor,
-    importer,
-    exporter
+    editor
 })
 
 /*

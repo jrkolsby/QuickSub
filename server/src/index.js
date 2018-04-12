@@ -8,10 +8,10 @@ const session = require('express-session')
 const fileUpload = require('express-fileupload');
 
 require('./actions')
-
 require('./secret')
-const PORT = 3001
-const PUBLIC_DIRECTORY = "./public"
+
+const PORT = 3005
+const STATIC_DIRECTORY = "./static"
 const VIDEO_FILENAME = "full-video"
 const AUDIO_FILENAME = "full-audio"
 const AUDIO_EXTENSION = ".wav"
@@ -47,7 +47,7 @@ app.use(session(sess))
 
 app.use(fileUpload());
 
-app.use(express.static(PUBLIC_DIRECTORY))
+app.use(express.static(STATIC_DIRECTORY))
 
 function extractAudio(videoFile, successCallback, errorCallback) {
     let directory = path.dirname(videoFile)
@@ -55,6 +55,8 @@ function extractAudio(videoFile, successCallback, errorCallback) {
     let destination = directory + "/" + AUDIO_FILENAME + AUDIO_EXTENSION
 
     let command = "ffmpeg -y -i " + videoFile + " -ac 1 -ar 32000 -vn " + destination
+
+    console.log(command)
 
     exec(command, (err, stdout, stderr) => {
         if (err) {
@@ -65,18 +67,59 @@ function extractAudio(videoFile, successCallback, errorCallback) {
     })
 }
 
+function formatChunks(chunkStream) {
+    var lines = chunkStream.toString().split('\n')
+    var chunks = []
+    for (var i = 0; i < lines.length && lines[i] != "END"; i += 3) {
+        chunks.push({
+            start: lines[i],
+            end: lines[i+1],
+            audioURL: lines[i+2]
+        }) 
+    }
+    return chunks
+}
+
 function generateChunks(audioFile, successCallback, errorCallback) {
     let command = 'python ./src/chunkify.py 1 ' + audioFile
-
+    
     console.log(command)
 
     exec(command, (err, stdout, stderr) => {
         if (err) {
             errorCallback("Chunk generation error: " + err)
         } else {
-            successCallback(stdout)    
+            var chunks = formatChunks(stdout)
+            for (var i = 0; i < chunks.length; i++) {
+                let chunk = chunks[i]
+                let audioFile = chunk.audioURL
+            }
+            successCallback(chunks)
         }
     })
+}
+
+function generateWaveform(audioFile, successCallback, errorCallback) {
+    let directory = path.dirname(audioFile)
+    let extension = path.extname(audioFile)
+    let basename = path.basename(audioFile, extension)
+    let output = directory + "/" + basename + '.json'
+
+    let command = 'audiowaveform -i ' + audioFile + ' -z 4096 -o ' + output
+
+    console.log(command)
+
+    exec(command, (err, stdout, stderr) => {
+        if (err) {
+            errorCallback("Waveform generation error: " + err)
+        } else {
+            var contents = fs.readFileSync(output)
+            var json = JSON.parse(contents)
+            var data = json.data
+            successCallback(data)
+        }
+    })
+
 }
 
 app.get('/', function(req, res) { 
@@ -88,10 +131,18 @@ app.get('/', function(req, res) {
         return res.status(200).send(success(chunkData))
     }
 
-    videoFile = "public/grizzly.m4v"
+    videoFile = "static/grizzly.m4v"
     extractAudio(videoFile, function(audioFile) {
         generateChunks(audioFile, function(chunks) {
-            successCallback(chunks)
+            generateWaveform(audioFile, function(fullWaveform) {
+                output = {
+                    audioURL: "",
+                    videoURL: "",
+                    waveformData: fullWaveform,
+                    chunks: chunks
+                }
+                return res.status(200).send(success(output)) 
+            }, errorCallback)
         }, errorCallback)
     }, errorCallback)
     
@@ -135,14 +186,14 @@ app.post('/chunkify', function(req, res) {
         mimetype !== 'video/x-ms-wmw') 
         return errorCallback("Invalid video format")
 
+    // Increment / initialize session
     if (req.session.sessionDirectory) {
         req.session.views ++;
     } else {
-        req.session.view = 1
     
         let recursiveHash = (i) => {
             var name = hash(SECRET, req.session.id)
-            fs.open(PUBLIC_DIRECTORY + "/" + name, (err, fd) => {
+            fs.open(STATIC_DIRECTORY + "/" + name, (err, fd) => {
                 if (err)
                     return recursiveHash(i + 1)
                 else
@@ -151,11 +202,12 @@ app.post('/chunkify', function(req, res) {
         }
 
         req.session.sessionDirectory = recursiveHash(0)
+        req.session.view = 1
     }
 
     let extension = path.extname(name)
 
-    let fullVideo = PUBLIC_DIRECTORY + "/" +
+    let fullVideo = STATIC_DIRECTORY + "/" +
                     req.session.sessionDirectory + 
                     VIDEO_FILENAME + extension
 
@@ -165,7 +217,10 @@ app.post('/chunkify', function(req, res) {
         } else {
             extractAudio(videoFile, function(audioFile) {
                 generateChunks(audioFile, function(chunks) {
-                    successCallback(chunkData)
+                    var lines = chunks.toString().split('\n')
+                    console.log(lines)
+                    // TODO: make chunks
+                    successCallback()
                 }, errorCallback)
             }, errorCallback)
         }

@@ -1,32 +1,52 @@
 import {ACTIONS} from '../actions';
 
+/*
+    chunks: [
+        {
+            start:
+            end:
+            textInput:
+            textPrediction:
+            waveformData:
+            audioURL:
+        }
+    ]
+*/
+
+/*
+    SERVER RESPONSE:
+
+    {
+        chunks: [
+            {
+                start:
+                end:
+                audioURL:
+                waveformData:
+            }, ...
+        ]
+        waveformData:
+        audioURL:
+        videoURL:
+    }
+*/
+
 let defaultState = {
-    userTime: 140,
-    adversaryTime: 150,
-
-    speed: 1,
-
-    url: "./videos/video.mp4",
-    title: "",
-    loaded: false,
-    play: false,
-    volume: 5
+    chunks: [],
+    player: {},
+    currentTime: 0,
+    waveformData: [],
+    audioURL: "",
+    videoURL: ""
 }
 
 const editor = (state=defaultState, action) => {
     switch(action.type) {
-        case ACTIONS.PLAY:
+        case ACTIONS.PLAYER_UPDATE:
             return {
                 ...state,
-                play: true
+                currentTime: action.payload.currentTime
             }
-
-        case ACTIONS.STOP:
-            return {
-                ...state,
-                play: false
-            }
-
         default:
             return state
     }
