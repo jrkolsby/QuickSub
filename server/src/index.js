@@ -10,7 +10,7 @@ const fileUpload = require('express-fileupload');
 require('./actions')
 require('./secret')
 
-const PORT = 3005
+const PORT = 3008
 const STATIC_DIRECTORY = "./static"
 const VIDEO_FILENAME = "full-video"
 const AUDIO_FILENAME = "full-audio"
