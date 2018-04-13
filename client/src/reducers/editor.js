@@ -1,43 +1,17 @@
 import {ACTIONS} from '../actions';
 
-/*
-    chunks: [
-        {
-            start:
-            end:
-            textInput:
-            textPrediction:
-            waveformData:
-            audioURL:
-        }
-    ]
-*/
-
-/*
-    SERVER RESPONSE:
-
-    {
-        chunks: [
-            {
-                start:
-                end:
-                audioURL:
-                waveformData:
-            }, ...
-        ]
-        waveformData:
-        audioURL:
-        videoURL:
-    }
-*/
-
 let defaultState = {
     chunks: [],
-    player: {},
     currentTime: 0,
     waveformData: [],
+
     audioURL: "",
-    videoURL: ""
+    videoURL: "",
+
+    uploadPending: false,
+
+    error: false,
+    errorText: ""
 }
 
 const editor = (state=defaultState, action) => {
@@ -47,6 +21,50 @@ const editor = (state=defaultState, action) => {
                 ...state,
                 currentTime: action.payload.currentTime
             }
+    
+        case ACTIONS.BEGIN_UPLOAD:
+            return {
+                ...state,
+                uploadPending: true,
+
+                error: false,
+                errorText: ""
+            }
+
+        case ACTIONS.SERVER_ERROR:
+            return {
+                ...state,
+                uploadPending: false,
+
+                error: true,
+                errorText: action.payload,
+            }
+
+        case ACTIONS.SERVER_SUCCESS:
+            var audioURL = action.payload.directory + "/" 
+                + action.payload.audioURL
+
+            var videoURL = action.payload.directory + "/" 
+                + action.payload.videoURL
+
+            return {
+                ...state,
+
+                chunks: action.payload.chunks,
+                waveformData: action.payload.waveformData,
+
+                audioURL,
+                videoURL,
+
+                uploadPending: false,
+
+                error: false,
+                errorText: ""
+
+
+            }
+
+
         default:
             return state
     }

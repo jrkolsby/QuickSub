@@ -1,6 +1,6 @@
 {
   "verbose": true,
-  "ignore": ["static/*.*"],
+  "ignore": ["static/**/*.*"],
   "execMap": {
     "rb": "ruby",
     "pde": "processing --sketch={{pwd}} --run"

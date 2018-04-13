@@ -11,7 +11,14 @@ class ChunkEditor extends Component {
                 active = true
             }
             return (
-                "balls"
+                <Chunk
+                    key={index}
+                    active={active}
+                    start={0}
+                    end={10}
+                    time={-1}
+                    text={"hey"}
+                />
             )
         })
     }

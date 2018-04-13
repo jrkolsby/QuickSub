@@ -1,6 +1,6 @@
 const ACTIONS = {
-    ERROR: "ERROR",
-    SUCCESS: "SUCCESS"
+    ERROR: "SERVER_ERROR",
+    SUCCESS: "SERVER_SUCCESS"
 }
 
 global.error = (errorMessage) => {

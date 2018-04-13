@@ -1,11 +1,13 @@
 const express = require('express');
 const {exec} = require('child_process')
 const path = require('path')
+const cors = require('cors')
 const fs = require('fs')
 
 const crypto = require('crypto')
 const session = require('express-session')
-const fileUpload = require('express-fileupload');
+const Busboy = require('busboy')
+//const fileUpload = require('express-fileupload');
 
 require('./actions')
 require('./secret')
@@ -29,25 +31,32 @@ let hash = (aSecret, anotherSecret) => {
 let directories = []
 
 let sess = {
+    name: 'server-session-cookie-id',
     secret: hash(SECRET, DARKER_SECRET),
-    resave: false,
     saveUninitialized: true,
+    resave: true,
     cookie: { 
         secure: false,
         maxAge: 12000
     }
 }
 
+app.use(session(sess))
+
 if (app.get('env') === 'production') {
     app.set('trust proxy', 1) // trust first proxy
     sess.cookie.secure = true // serve secure cookies
 }
 
-app.use(session(sess))
-
-app.use(fileUpload());
+//app.use(fileUpload());
 
 app.use(express.static(STATIC_DIRECTORY))
+
+// DEVELOPMENT!!
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}));
 
 function extractAudio(videoFile, successCallback, errorCallback) {
     let directory = path.dirname(videoFile)
@@ -122,110 +131,104 @@ function generateWaveform(audioFile, successCallback, errorCallback) {
 
 }
 
-app.get('/', function(req, res) { 
-    let errorCallback = (errorMessage) => {
-        return res.status(500).send(error(errorMessage))
-    }
-
-    let successCallback = (chunkData) => {
-        return res.status(200).send(success(chunkData))
-    }
-
-    videoFile = "static/grizzly.m4v"
-    extractAudio(videoFile, function(audioFile) {
-        generateChunks(audioFile, function(chunks) {
-            generateWaveform(audioFile, function(fullWaveform) {
-                output = {
-                    audioURL: "",
-                    videoURL: "",
-                    waveformData: fullWaveform,
-                    chunks: chunks
-                }
-                return res.status(200).send(success(output)) 
-            }, errorCallback)
-        }, errorCallback)
-    }, errorCallback)
-    
-});
-
-// TODO: USE <input name="videoFile" type="file" />
 // TODO: sessionStorage.getItem('sessionDirectory')
 // TODO: sessionStorage.getItem('type')
 
-app.post('/chunkify', function(req, res) {
+app.post('/upload', function(req, res) {
 
     let errorCallback = (errorMessage) => {
-        return res.status(500).send(error(errorMessage))
+        return res.status(400).send(error(errorMessage))
     }
 
     let successCallback = (chunkData) => {
         return res.status(200).send(success(chunkData))
     }
 
-    if (!req.files)
-        return errorCallback("No video uploaded")
+	var busboy = new Busboy({ headers: req.headers });
 
-    let videoFile = req.files.videoFile
+	var sessionDirectory
+	var localSessionDirectory
 
-    let mv = videoFile.mv
-    let name = videoFile.name
-    let data = videoFile.data
-    let mimetype = videoFile.mimetype
-    let truncated = videoFile.truncated
+	// TODO: Migrate to same origin (domain + port) for static and cookies
+	// THIS IS REQUIRED TO PRESERVE SESSION STORAGE
+	if (req.session.directory) {
+		sessionDirectory = req.session.directory
+		localSessionDirectory = STATIC_DIRECTORY + "/" + sessionDirectory
 
-    if (truncated) 
-        return errorCallback("Video upload incomplete")
+		req.session.views ++;
+	} else {
+	
+		let recursiveHash = (i) => {
+			var exists = false
+			var name = hash(i.toString(), req.session.id)
+			fs.open(STATIC_DIRECTORY + "/" + name, 'r', (err, fd) => {
+				if (err)
+					exists = true
+			})
+			if (exists)
+				return recursiveHash(i+1)
 
-    if (mimetype !== 'video/x-flv' ||
-        mimetype !== 'video/mp4' ||
-        mimetype !== 'video/application/x-mpegURL' ||
-        mimetype !== 'video/MP2T' ||
-        mimetype !== 'video/3gpp' ||
-        mimetype !== 'video/quicktime' ||
-        mimetype !== 'video/x-msvideo' ||
-        mimetype !== 'video/x-ms-wmw') 
-        return errorCallback("Invalid video format")
+			return name
+		}
 
-    // Increment / initialize session
-    if (req.session.sessionDirectory) {
-        req.session.views ++;
-    } else {
-    
-        let recursiveHash = (i) => {
-            var name = hash(SECRET, req.session.id)
-            fs.open(STATIC_DIRECTORY + "/" + name, (err, fd) => {
-                if (err)
-                    return recursiveHash(i + 1)
-                else
-                    return name
-            })
-        }
+		var newDirectory = recursiveHash(0)
+		sessionDirectory = newDirectory
+		localSessionDirectory = STATIC_DIRECTORY + "/" + sessionDirectory
 
-        req.session.sessionDirectory = recursiveHash(0)
-        req.session.view = 1
-    }
+		req.session.directory = sessionDirectory
+		req.session.views = 1
 
-    let extension = path.extname(name)
+		fs.mkdirSync(localSessionDirectory)
+	}
 
-    let fullVideo = STATIC_DIRECTORY + "/" +
-                    req.session.sessionDirectory + 
-                    VIDEO_FILENAME + extension
+	let localVideoFile
 
-    mv(fullVideo, (err) => {
-        if (err) {
-            return errorCallback("Internal Error")
-        } else {
-            extractAudio(videoFile, function(audioFile) {
-                generateChunks(audioFile, function(chunks) {
-                    var lines = chunks.toString().split('\n')
-                    console.log(lines)
-                    // TODO: make chunks
-                    successCallback()
-                }, errorCallback)
-            }, errorCallback)
-        }
-    })
-    // FIXME: After this make sure to return
+	busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+
+		file.on('data', function(data) {
+			console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
+		});
+
+		file.on('end', function() {
+			if (mimetype !== 'video/x-flv' &&
+				mimetype !== 'video/x-m4v' &&
+				mimetype !== 'video/mp4' &&
+				mimetype !== 'video/application/x-mpegURL' &&
+				mimetype !== 'video/MP2T' &&
+				mimetype !== 'video/3gpp' &&
+				mimetype !== 'video/quicktime' &&
+				mimetype !== 'video/x-msvideo' &&
+				mimetype !== 'video/x-ms-wmw') 
+				return errorCallback("Invalid video format: " + mimetype)
+		});
+
+		let extension = path.extname(filename)
+    	localVideoFile = localSessionDirectory + "/" + VIDEO_FILENAME + extension
+		
+		file.pipe(fs.createWriteStream(localVideoFile))
+	});
+
+	busboy.on('finish', function() {
+		extractAudio(localVideoFile, function(localAudioFile) {
+			console.log('got audio', localAudioFile)
+			generateChunks(localAudioFile, function(chunks) {
+				console.log('got chunks', localAudioFile)
+				generateWaveform(localAudioFile, function(fullWaveform) {
+					console.log('got waveform', localAudioFile)
+					output = {
+						audioURL: path.basename(localAudioFile),
+						videoURL: path.basename(localVideoFile),
+						directory: sessionDirectory,
+						waveformData: fullWaveform,
+						chunks: chunks
+					}
+					return res.status(200).send(success(output)) 
+				}, errorCallback)
+			}, errorCallback)
+		}, errorCallback)
+	});
+
+	return req.pipe(busboy);
 });
 
 app.listen(PORT, () => console.log('Listening on port ' + PORT))

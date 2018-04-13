@@ -11,6 +11,8 @@
     "react-redux": "^5.0.7",
     "react-scripts": "1.1.4",
     "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0",
+    "superagent": "^3.8.2",
     "vad": "0.0.1",
     "video-react": "^0.10.4"
   },
