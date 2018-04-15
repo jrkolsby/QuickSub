@@ -8,7 +8,8 @@ export const ACTIONS = {
     INSERT_CAPTION: 'new cap',
     BEGIN_UPLOAD: 'in progress',
     SERVER_ERROR: 'SERVER_ERROR',
-    SERVER_SUCCESS: 'SERVER_SUCCESS'
+    SERVER_SUCCESS: 'SERVER_SUCCESS',
+    SERVER_PROGRESS: 'new percent',
 }
 
 export const playerUpdate = (playerState) => {
@@ -32,11 +33,12 @@ export const uploadVideo = (videoFile) => {
         req.attach(FILENAME, videoFile)
         req.end((err, res) => {
             if (res) {
+                console.log(res.body)
                 dispatch(res.body) 
-            }
-            if (err) {
+            } else {
                 console.log(err)
             }
+            
         })
     }
 }

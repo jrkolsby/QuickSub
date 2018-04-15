@@ -1,3 +1,21 @@
+@font-face {
+    font-family: 'Sparks Bar Extranarrow';
+    src: url('../assets/sparks/eot/Sparks-Bar-Extranarrow.eot');
+    src: url('../assets/sparks/eot/Sparks-Bar-Extranarrow.eot?#iefix') format('embedded-opentype'),
+         url('../assets/sparks/woff2/Sparks-Bar-Extranarrow.woff2') format('woff2'),
+         url('../assets/sparks/woff/Sparks-Bar-Extranarrow.woff') format('woff'),
+         url('../assets/sparks/ttf/Sparks-Bar-Extranarrow.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Sparks Bar Narrow';
+    src: url('../assets/sparks/eot/Sparks-Bar-Narrow.eot');
+    src: url('../assets/sparks/eot/Sparks-Bar-Narrow.eot?#iefix') format('embedded-opentype'),
+         url('../assets/sparks/woff2/Sparks-Bar-Narrow.woff2') format('woff2'),
+         url('../assets/sparks/woff/Sparks-Bar-Narrow.woff') format('woff'),
+         url('../assets/sparks/ttf/Sparks-Bar-Narrow.ttf') format('truetype');
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -6,9 +24,63 @@ body {
 
 /* CUSTOM VIDEO STYLES */
 div.video-react-control-bar {
-
+    display: none;
 }
 
-.video-react-video {
-    width: 800px;
+#root {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+#editor {
+    
+}
+
+.dropzone {
+    width: 100%;
+    height: 300px;
+    background: #f1f1f1;
+}
+
+.video-react {
+    outline: none;
+}
+
+video.video-react-video {
+    width: 100%;
+}
+
+.waveform {
+    font-feature-settings: "calt";
+    font-family: 'Sparks Bar Narrow'; 
+    font-variant-ligatures: contextual;
+    -moz-font-feature-settings: "calt";
+    -webkit-font-feature-settings: "calt";
+
+    white-space: nowrap;
+
+    font-size: 52px;
+    transform: scaleY(4);
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    height: 60px;
+
+    /* Hardware accellerate whoosh */
+    -webkit-font-smoothing: subpixel-antialiased;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
+
+.waveform span {
+    display: inline-block;
+    color: black;
+}
+
+.waveform span.chunk {
+    color: violet;
+}
+.waveform span.playing {
+    color: red;
 }

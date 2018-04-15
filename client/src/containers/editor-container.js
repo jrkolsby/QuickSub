@@ -3,6 +3,7 @@ import React, {Component} from 'react'
 import {Player} from 'video-react'
 import Dropzone from 'react-dropzone'
 import ChunkEditor from '../components/chunkEditor.js'
+import Waveform from '../components/waveform.js'
 
 import {connect} from 'react-redux';
 import * as actionCreators from '../actions'
@@ -66,8 +67,15 @@ class EditorContainer extends Component {
                     width={-1}
                     src={this.getVideoSource()}
                 />
+                <Waveform
+                    data={this.props.waveformData}
+                    currentTime={this.props.currentTime}
+                    duration={this.props.duration}
+                    length={20}
+                />
                 <ChunkEditor
                     chunks={this.props.chunks}
+                    waveformData={this.props.waveformData}
                     currentTime={this.props.currentTime}
                 />
             </div>

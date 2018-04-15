@@ -18,6 +18,7 @@ const VIDEO_FILENAME = "full-video"
 const AUDIO_FILENAME = "full-audio"
 const AUDIO_EXTENSION = ".wav"
 const CHUNK_FILENAME = "chunk"
+const WAVEFORM_BITS = 16
 
 const app = express();
 
@@ -69,7 +70,7 @@ function extractAudio(videoFile, successCallback, errorCallback) {
 
     exec(command, (err, stdout, stderr) => {
         if (err) {
-            errorCallback("Audio extraction error: " + err)
+            errorCallback("Invalid audio track")
         } else {
             successCallback(destination)
         }
@@ -96,7 +97,7 @@ function generateChunks(audioFile, successCallback, errorCallback) {
 
     exec(command, (err, stdout, stderr) => {
         if (err) {
-            errorCallback("Chunk generation error: " + err)
+            errorCallback("Could not generate chunks")
         } else {
             var chunks = formatChunks(stdout)
             for (var i = 0; i < chunks.length; i++) {
@@ -114,21 +115,27 @@ function generateWaveform(audioFile, successCallback, errorCallback) {
     let basename = path.basename(audioFile, extension)
     let output = directory + "/" + basename + '.json'
 
-    let command = 'audiowaveform -i ' + audioFile + ' -z 4096 -o ' + output
+    let command = 'audiowaveform -i ' + audioFile +
+				  ' -z 4096 -b ' + WAVEFORM_BITS + 
+				  ' -o ' + output
 
     console.log(command)
 
     exec(command, (err, stdout, stderr) => {
         if (err) {
-            errorCallback("Waveform generation error: " + err)
+            errorCallback("Could not generate waveform")
         } else {
             var contents = fs.readFileSync(output)
             var json = JSON.parse(contents)
             var data = json.data
+			
+			let maxValue = Math.pow(2, WAVEFORM_BITS)
+			for (var i = 0; i < data.length; i++) {
+				data[i]	= Math.floor((Math.abs(data[i])/maxValue) * 100)
+			}
             successCallback(data)
         }
-    })
-
+    });
 }
 
 // TODO: sessionStorage.getItem('sessionDirectory')

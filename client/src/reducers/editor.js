@@ -3,6 +3,7 @@ import {ACTIONS} from '../actions';
 let defaultState = {
     chunks: [],
     currentTime: 0,
+    duration: 0,
     waveformData: [],
 
     audioURL: "",
@@ -19,7 +20,8 @@ const editor = (state=defaultState, action) => {
         case ACTIONS.PLAYER_UPDATE:
             return {
                 ...state,
-                currentTime: action.payload.currentTime
+                currentTime: action.payload.currentTime,
+                duration: action.payload.duration
             }
     
         case ACTIONS.BEGIN_UPLOAD:
