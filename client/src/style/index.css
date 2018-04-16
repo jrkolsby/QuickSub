@@ -16,6 +16,15 @@
          url('../assets/sparks/ttf/Sparks-Bar-Narrow.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'Sparks Bar Medium';
+    src: url('../assets/sparks/eot/Sparks-Bar-Medium.eot');
+    src: url('../assets/sparks/eot/Sparks-Bar-Medium.eot?#iefix') format('embedded-opentype'),
+         url('../assets/sparks/woff2/Sparks-Bar-Medium.woff2') format('woff2'),
+         url('../assets/sparks/woff/Sparks-Bar-Medium.woff') format('woff'),
+         url('../assets/sparks/ttf/Sparks-Bar-Medium.ttf') format('truetype');
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -41,6 +50,26 @@ div.video-react-control-bar {
     width: 100%;
     height: 300px;
     background: #f1f1f1;
+    position: relative;
+}
+
+.dropzone::before {
+    content: "Drop a video file!";
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+}
+
+.dropzone.active::before {
+    display:none
+}
+
+.dropzone.active {
+    background: #C5EF99;
 }
 
 .video-react {
@@ -49,38 +78,62 @@ div.video-react-control-bar {
 
 video.video-react-video {
     width: 100%;
+    position: relative;
+    z-index: 0;
 }
+
+input {
+    margin-top: 20px;
+}
+
+
 
 .waveform {
     font-feature-settings: "calt";
-    font-family: 'Sparks Bar Narrow'; 
     font-variant-ligatures: contextual;
     -moz-font-feature-settings: "calt";
     -webkit-font-feature-settings: "calt";
 
     white-space: nowrap;
 
-    font-size: 52px;
-    transform: scaleY(4);
-    overflow-x: scroll;
-    overflow-y: hidden;
+    position: relative;
+    z-index: 5;
 
-    height: 60px;
+    font-size: 3rem;
+    height: 6rem;
 
     /* Hardware accellerate whoosh */
     -webkit-font-smoothing: subpixel-antialiased;
     backface-visibility: hidden;
     transform: translateZ(0);
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    pointer-events: none;
+
+    cursor: default;      
 }
 
 .waveform span {
+    font-family: 'Sparks Bar Narrow'; 
+
     display: inline-block;
+    transform: scale(1,10);
     color: black;
+    position: relative;
+    top: -3rem;
 }
 
 .waveform span.chunk {
-    color: violet;
+    color: pink;
 }
-.waveform span.playing {
+
+.waveform span.playhead {
+    /* font-family: 'Sparks Bar Medium'; */
     color: red;
 }

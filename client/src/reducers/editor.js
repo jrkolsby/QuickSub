@@ -1,8 +1,10 @@
 import {ACTIONS} from '../actions';
+import response from './response'
 
 let defaultState = {
     chunks: [],
     currentTime: 0,
+    currentChunk: 0,
     duration: 0,
     waveformData: [],
 
@@ -17,20 +19,25 @@ let defaultState = {
 
 const editor = (state=defaultState, action) => {
     switch(action.type) {
+        case ACTIONS.JUMP_CHUNK:
+            return {
+                ...state,
+
+                currentChunk: action.payload
+            }
         case ACTIONS.PLAYER_UPDATE:
             return {
                 ...state,
                 currentTime: action.payload.currentTime,
+
+                // FIXME: Add PLAYER_INITIALIZED to set this
                 duration: action.payload.duration
             }
     
         case ACTIONS.BEGIN_UPLOAD:
             return {
-                ...state,
+                ...defaultState,
                 uploadPending: true,
-
-                error: false,
-                errorText: ""
             }
 
         case ACTIONS.SERVER_ERROR:
@@ -62,10 +69,7 @@ const editor = (state=defaultState, action) => {
 
                 error: false,
                 errorText: ""
-
-
             }
-
 
         default:
             return state

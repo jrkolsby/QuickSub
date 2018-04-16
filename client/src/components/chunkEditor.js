@@ -6,18 +6,22 @@ class ChunkEditor extends Component {
     renderChunks() {
         return this.props.chunks.map((chunk, index) => {
             var active = false
+
             if (chunk.end >= this.props.currentTime &&
                 chunk.start <= this.props.currentTime) { 
                 active = true
             }
+
             return (
                 <Chunk
                     key={index}
-                    active={active}
-                    start={0}
-                    end={10}
-                    time={-1}
-                    text={"hey"}
+                    chunk={this.props.chunks[index]}
+                    waveformData={this.props.waveformData}
+                    currentTime={this.props.currentTime}
+                    totalDuration={this.props.duration}
+                    handleSelect={() => {
+                        this.props.handleSelect(index)
+                    }}
                 />
             )
         })

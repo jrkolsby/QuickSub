@@ -8,7 +8,7 @@ import json
 import webrtcvad
 
 FRAME_DURATION = 30
-PADDING_DURATION = 300
+PADDING_DURATION = 200
 
 def read_wave(path):
     """Reads a .wav file.

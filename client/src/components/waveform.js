@@ -1,86 +1,132 @@
 import React, {Component, Fragment} from 'react'
 
-const PLAYED_CLASS = "played"
 const CHUNK_CLASS = "chunk"
 const DEFAULT_CLASS = ""
 const PLAYHEAD_CLASS = "playhead"
 
 class Waveform extends Component {
 
-    timeToIndex(time) {
-        var percent = time / this.props.duration
+    indexWithTime(time) {
+        var percent = time / this.props.totalDuration
         return Math.floor(percent * this.props.data.length)
     }
 
-    renderChunk() {
-         
+    makeSpans(spanArray) { 
+        return spanArray.map((item, index) => {
+            if (item.inner === "{}") {
+                return null
+            } else {
+                return (
+                    <span 
+                        key={index}
+                        className={item.className}>
+                        {item.inner}
+                    </span>
+                ) 
+            }
+        })
     }
 
-    renderData() { 
-        // this.props.begin
-        // this.props.end
-        // this.props.length
-        // this.props.chunks
+    makeSpanArray(start, end, play, defaultClass) {
+        
+        var currentSpan = 0
+        var spanArray = [
+            {
+                className: defaultClass,
+                inner: "{"
+            }
+        ]
 
-        if (this.props.data.length === 0 ||
-            this.props.length === 0) {
-            return ""
-        }
+        for (var i = start; i < end; i++) {
+            if (i === play) {
+                // Close current span
+                spanArray[currentSpan].inner += "}"
 
-        var length = this.props.end - this.props.begin
+                // Make playhead span
+                spanArray.push({
+                    className: PLAYHEAD_CLASS,
+                    inner: "{" + this.props.data[i] + "}"
+                })
 
-        if (this.props.length) 
-            length = this.props.length
+                // Open new span
+                spanArray.push({
+                    className: defaultClass,
+                    inner: "{"
+                })
 
-        var middleIndex = timeToIndex(this.props.currentTime)
-        var bottomIndex = middleIndex + (this.props.length / 2)
+                currentSpan += 2
 
-        if (bottomIndex < 0)
-            bottomIndex = 0
+                continue;
+            }
 
-        var topIndex = bottomIndex + length
-
-        if (topIndex > this.props.data.length)
-            topIndex = this.props.data.length
-
-        if (middleIndex === 0)
-            middleIndex = 1
-
-        if (middleIndex === this.props.data.length)
-            middleIndex = this.props.data.length - 1
-
-        var spans = []
-
-        for (i = bottomIndex; i < topIndex; i++) {
-
-            if (chunkTrigger = true && i >= nextEndIndex)
-
-                nextStart = this.props.chunks[chunkIndex].start / this.props.duration
-                nextEnd = this.props.chunks[chunkIndex].end / this.props.duration
-
-            if (i < middleIndex) {
-                before.push(this.props.data[i])
+            if (spanArray[currentSpan].inner === "{") {
+                spanArray[currentSpan].inner += this.props.data[i].toString()
             } else {
-                after.push(this.props.data[i])
+                spanArray[currentSpan].inner += "," + this.props.data[i]
             }
         }
 
-        var beforeString = "{" + before.join(',') + "}"
-        var afterString = "{" + after.join(',') + "}"
+        spanArray[currentSpan].inner += "}" 
 
+        return spanArray
+    }
 
-        return (
-            <Fragment>
-                <span className={PLAYED_CLASS}>{beforeString}</span>
-                <span className={UNPLAYED_CLASS}>{afterString}</span>
-            </Fragment>
-        )
+    renderChunk() {
+        var playIndex = this.indexWithTime(this.props.currentTime)
+        var startIndex = this.indexWithTime(this.props.chunk.start)
+        var endIndex = this.indexWithTime(this.props.chunk.end)
+            
+        var spanArray = this.makeSpanArray(startIndex, 
+                                           endIndex, 
+                                           playIndex,
+                                           CHUNK_CLASS)
+        return this.makeSpans(spanArray)
+    }
 
-    }   
+    renderDynamic() { 
+        var playIndex = this.indexWithTime(this.props.currentTime)
+        var startIndex = playIndex - this.props.length / 2
+        var endIndex = startIndex + this.props.length
+
+        if (startIndex < 0) {
+            startIndex = 0
+            endIndex = startIndex + this.props.length
+        }
+
+        if (endIndex > this.props.data.length-1) {
+            endIndex = this.props.data.length-1
+            startIndex = endIndex - this.props.length
+        }
+
+        var spanArray = this.makeSpanArray(startIndex, 
+                                           endIndex, 
+                                           playIndex,
+                                           DEFAULT_CLASS)
+        return this.makeSpans(spanArray)
+	}   
 
     render() {
+        if (!this.props.totalDuration) {
+            return null
+        }
+
+        if (this.props.chunk) {
+
+            if (this.props.chunk.end > this.props.totalDuration) {
+                return null
+            }
+
+            return (
+                <div className="waveform">
+                    {this.renderChunk()} 
+                </div>
+            )
+        } 
+
         return (
-            <div className="waveform">{this.renderData()}</div>
+            <div className="waveform">
+                {this.renderDynamic()}
+            </div>
         )
     }
 }

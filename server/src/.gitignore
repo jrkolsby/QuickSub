@@ -1,2 +1,3 @@
 secret.js
 *.swp
+__pycache__

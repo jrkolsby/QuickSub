@@ -9,6 +9,10 @@ import {connect} from 'react-redux';
 import * as actionCreators from '../actions'
 
 const SERVER_URL = "http://localhost:3008/"
+const DROPZONE_CLASS = "dropzone"
+const DROPZONE_ACTIVE_CLASS = "active"
+const DROPZONE_ACCEPT_CLASS = "accept"
+const DROPZONE_REJECT_CLASS = "reject"
 
 class EditorContainer extends Component {
     constructor(props) {
@@ -26,13 +30,12 @@ class EditorContainer extends Component {
     }
 
     handlePlayerStateChange(state, prevState) {
-        // Time update
-        if (state.currentTime !== prevState.currentTime) {
-            this.props.playerUpdate(state)
-        }
+        // ACTION : update player
+        this.props.playerUpdate(state)
     }
 
     handleDrop(acceptedFiles, rejectedFiles) {
+        // ACTION : server call
         this.props.uploadVideo(acceptedFiles[0])
     }
 
@@ -42,7 +45,25 @@ class EditorContainer extends Component {
             this.handlePlayerStateChange.bind(this)
         );
     }
-    
+
+    componentWillReceiveProps(newProps) {
+        var newChunkIndex = newProps.currentChunk
+        var newChunk = newProps.chunks[newChunkIndex]        
+
+        const { player } = this.refs.player.getState();
+
+        // Need to add 0.25 because of odd float comparison
+        var newTime = parseFloat(player.currentTime) + 0.25
+        var start = parseFloat(newChunk.start)
+        var end = parseFloat(newChunk.end)
+
+        if (newTime < start ||
+            newTime > end) {
+            console.log('SEEK: ' + start + ' > ' + newTime)
+            this.refs.player.seek(start) 
+        }
+    }
+
     componentWillUpdate() {
         this.refs.player.forceUpdate()
     }
@@ -52,12 +73,17 @@ class EditorContainer extends Component {
             return SERVER_URL + this.props.videoURL
     }
 
-    render() {
+    render() {  
         return (
             <div id="editor">
                 <Dropzone
                     onDrop={this.handleDrop.bind(this)}
                     accepts={this.videoTypes}
+                    style={{}}
+                    className={DROPZONE_CLASS}
+                    activeClassName={DROPZONE_ACTIVE_CLASS}
+                    acceptClassName={DROPZONE_ACCEPT_CLASS}
+                    rejectClassName={DROPZONE_REJECT_CLASS}
                     multiple={false}
                 />
                 <Player 
@@ -70,13 +96,16 @@ class EditorContainer extends Component {
                 <Waveform
                     data={this.props.waveformData}
                     currentTime={this.props.currentTime}
-                    duration={this.props.duration}
-                    length={20}
+                    totalDuration={this.props.duration}
+                    //chunks={this.props.chunks}
+                    length={100}
                 />
                 <ChunkEditor
                     chunks={this.props.chunks}
-                    waveformData={this.props.waveformData}
+                    duration={this.props.duration}
                     currentTime={this.props.currentTime}
+                    waveformData={this.props.waveformData}
+                    handleSelect={this.props.jumpToChunk}
                 />
             </div>
         )
