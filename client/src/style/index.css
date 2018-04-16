@@ -86,6 +86,17 @@ input {
     margin-top: 20px;
 }
 
+#chunk-editor {
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    padding: 40px 0;
+}
+
+#chunk-editor div.chunk {
+    display: inline-block;
+    margin-right: 30px;
+}
 
 
 .waveform {
