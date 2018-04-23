@@ -5,16 +5,17 @@ import Chunk from './chunk'
 class ChunkEditor extends Component {
     renderChunks() {
         return this.props.chunks.map((chunk, index) => {
-            var active = false
 
-            if (chunk.end >= this.props.currentTime &&
-                chunk.start <= this.props.currentTime) { 
+            var active = false
+            if (index === this.props.currentChunk) {
                 active = true
+                console.log('focus', index)
             }
 
             return (
                 <Chunk
                     key={index}
+                    active={active}
                     chunk={this.props.chunks[index]}
                     waveformData={this.props.waveformData}
                     currentTime={this.props.currentTime}

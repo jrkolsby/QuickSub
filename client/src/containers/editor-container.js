@@ -31,6 +31,8 @@ class EditorContainer extends Component {
             "video/mp4, " +
             "video/MP2T, " + 
             "video/3gpp"
+
+        this.handleSelect = this.handleSelect.bind(this)
     }
 
     handlePlayerStateChange(state, prevState) {
@@ -41,6 +43,12 @@ class EditorContainer extends Component {
     handleDrop(acceptedFiles, rejectedFiles) {
         // ACTION : server call
         this.props.uploadVideo(acceptedFiles[0])
+    }
+
+    handleSelect(chunkIndex) {
+
+        this.props.jumpToChunk(chunkIndex)
+        this.refs.player.seek(this.props.chunks[chunkIndex].start)
     }
 
     componentDidMount() {
@@ -60,23 +68,39 @@ class EditorContainer extends Component {
         var start = newChunk.start
         var end = newChunk.end
 
-        if (this.props.repeatChunks) {
-
+        if (newProps.repeatChunks) {
             if (newTime < start ||
                 newTime > end) {
                 this.refs.player.seek(start) 
             } 
-
         } else {
+            // If we're in an empty zone...
+            var thisChunk
+            var lastChunk
 
-            if (newTime < start)
-                this.refs.player.seek(start) 
+            for (var i = 0; i < newProps.chunks.length; i++) {
+                thisChunk = newProps.chunks[i]
+                lastChunk = newProps.chunks[i-1]
 
-            if (newTime > end)
-                this.props.jumpToChunk(this.props.currentChunk + 1)
+                if (!lastChunk && newTime < thisChunk.start) {
+
+                    this.handleSelect(i)
+                    break;
+                    
+                }
+
+                if (!!lastChunk && thisChunk && 
+                    newTime < thisChunk.start &&
+                    newTime > lastChunk.end) {
+
+                    this.handleSelect(i)
+                    break; 
+
+                }
+            }
         }
 
-        if (this.props.variableSpeed) {
+        if (newProps.variableSpeed) {
             let interval = (end - start)/60
             let wordCount = newChunk.text.length / DEFAULT_CPW
 
@@ -122,6 +146,7 @@ class EditorContainer extends Component {
                 />
                 <ChunkEditor
                     chunks={this.props.chunks}
+                    currentChunk={this.props.currentChunk}
 
                     duration={this.props.duration}
                     currentTime={this.props.currentTime}
@@ -136,11 +161,11 @@ class EditorContainer extends Component {
                     handleTrim={this.props.trim}
                     handleJoin={this.props.join}
                     handleSplit={this.props.split}
+                    handleEdit={this.props.editChunk}
 
                     isTrimming={this.props.isTrimming} 
 
-                    handleSelect={this.props.jumpToChunk}
-                    handleEdit={this.props.editChunk}
+                    handleSelect={this.handleSelect}
                 />
             </div>
         )

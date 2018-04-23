@@ -15,7 +15,7 @@ let defaultState = {
     videoURL: "",
 
     repeatChunks: false,
-    variableSpeed: false,
+    variableSpeed: true,
 
     uploadPending: false,
 

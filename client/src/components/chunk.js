@@ -10,8 +10,7 @@ class Chunk extends Component {
     }
 
     didSplit() {
-        this.props.handleSplit()
-    
+        this.props.handleSplit() 
     }
 
     didJoin() {
@@ -27,6 +26,11 @@ class Chunk extends Component {
         // TODO: calculate pixels per second!
         //console.log(this.refs.data.offsetWidth)
     }
+
+    componentWillReceiveProps(newProps) {
+        if (newProps.active)
+            this.refs.textInput.focus() 
+    }  
 
     render() {
         let start = "-"
@@ -72,7 +76,10 @@ class Chunk extends Component {
                     ref="textInput"
                     type="text" 
                     placeholder="Caption"
-                    onFocus={this.props.handleSelect}
+                    onFocus={() => {
+                        if (!this.props.active)
+                            this.props.handleSelect()
+                    }}
                     onChange={this.inputDidChange}
                     value={this.props.chunk.inputText}
                 />
