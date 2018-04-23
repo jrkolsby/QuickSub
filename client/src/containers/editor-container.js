@@ -8,11 +8,15 @@ import Waveform from '../components/waveform.js'
 import {connect} from 'react-redux';
 import * as actionCreators from '../actions'
 
-const SERVER_URL = "http://localhost:3008/"
 const DROPZONE_CLASS = "dropzone"
 const DROPZONE_ACTIVE_CLASS = "active"
 const DROPZONE_ACCEPT_CLASS = "accept"
 const DROPZONE_REJECT_CLASS = "reject"
+const DROPZONE_MINIMIZE_CLASS = "minimize"
+
+// Characters per minute = 41 words per min * 5 chars per word
+const DEFAULT_WPM = 160
+const DEFAULT_CPW = 5
 
 class EditorContainer extends Component {
     constructor(props) {
@@ -48,29 +52,42 @@ class EditorContainer extends Component {
 
     componentWillReceiveProps(newProps) {
         var newChunkIndex = newProps.currentChunk
-        var newChunk = newProps.chunks[newChunkIndex]        
+        var newChunk = newProps.chunks[newChunkIndex]
 
         const { player } = this.refs.player.getState();
 
-        // Need to add 0.25 because of odd float comparison
-        var newTime = parseFloat(player.currentTime) + 0.25
-        var start = parseFloat(newChunk.start)
-        var end = parseFloat(newChunk.end)
+        var newTime = player.currentTime + 0.01
+        var start = newChunk.start
+        var end = newChunk.end
 
-        if (newTime < start ||
-            newTime > end) {
-            console.log('SEEK: ' + start + ' > ' + newTime)
-            this.refs.player.seek(start) 
+        if (this.props.repeatChunks) {
+
+            if (newTime < start ||
+                newTime > end) {
+                this.refs.player.seek(start) 
+            } 
+
+        } else {
+
+            if (newTime < start)
+                this.refs.player.seek(start) 
+
+            if (newTime > end)
+                this.props.jumpToChunk(this.props.currentChunk + 1)
+        }
+
+        if (this.props.variableSpeed) {
+            let interval = (end - start)/60
+            let wordCount = newChunk.text.length / DEFAULT_CPW
+
+            let actualWPM = wordCount / interval
+
+            this.refs.player.playbackRate = DEFAULT_WPM / actualWPM 
         }
     }
 
     componentWillUpdate() {
         this.refs.player.forceUpdate()
-    }
-
-    getVideoSource() {
-        if (this.props.videoURL !== "")
-            return SERVER_URL + this.props.videoURL
     }
 
     render() {  
@@ -80,7 +97,10 @@ class EditorContainer extends Component {
                     onDrop={this.handleDrop.bind(this)}
                     accepts={this.videoTypes}
                     style={{}}
-                    className={DROPZONE_CLASS}
+                    className={this.props.videoURL === "" ?
+                                (DROPZONE_CLASS) :
+                                (DROPZONE_CLASS + " " +
+                                 DROPZONE_MINIMIZE_CLASS)}
                     activeClassName={DROPZONE_ACTIVE_CLASS}
                     acceptClassName={DROPZONE_ACCEPT_CLASS}
                     rejectClassName={DROPZONE_REJECT_CLASS}
@@ -91,21 +111,36 @@ class EditorContainer extends Component {
                     fluid={false}
                     height={-1}
                     width={-1}
-                    src={this.getVideoSource()}
+                    src={this.props.videoURL}
                 />
                 <Waveform
                     data={this.props.waveformData}
                     currentTime={this.props.currentTime}
                     totalDuration={this.props.duration}
                     //chunks={this.props.chunks}
-                    length={100}
+                    length={110}
                 />
                 <ChunkEditor
                     chunks={this.props.chunks}
+
                     duration={this.props.duration}
                     currentTime={this.props.currentTime}
                     waveformData={this.props.waveformData}
+
+                    handleStartTrim={this.props.startTrim}
+                    handleStartJoin={this.props.startJoin}
+
+                    handleEndTrim={this.props.endTrim}
+                    handleEndJoin={this.props.endJoin}
+
+                    handleTrim={this.props.trim}
+                    handleJoin={this.props.join}
+                    handleSplit={this.props.split}
+
+                    isTrimming={this.props.isTrimming} 
+
                     handleSelect={this.props.jumpToChunk}
+                    handleEdit={this.props.editChunk}
                 />
             </div>
         )

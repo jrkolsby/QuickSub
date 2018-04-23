@@ -80,12 +80,17 @@ function extractAudio(videoFile, successCallback, errorCallback) {
 function formatChunks(chunkStream) {
     var lines = chunkStream.toString().split('\n')
     var chunks = []
-    for (var i = 0; i < lines.length && lines[i] != "END"; i += 3) {
-        chunks.push({
-            start: lines[i],
-            end: lines[i+1],
-            audioURL: lines[i+2]
-        }) 
+    for (var i = 0; i < lines.length; i += 3) {
+
+        if (lines[i] && lines[i+1] && lines[i+2]) {
+            chunks.push({
+                start: parseFloat(lines[i]),
+                end: parseFloat(lines[i+1]),
+                audioURL: lines[i+2],
+                text: ""
+            })  
+        }
+
     }
     return chunks
 }

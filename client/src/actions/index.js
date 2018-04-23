@@ -5,12 +5,82 @@ const FILENAME = 'videoFile'
 
 export const ACTIONS = {
     JUMP_CHUNK: 'new chunk yo',
+    EDIT_CHUNK: 'new stuff',
+
+    START_TRIM: 'draggin',
+    START_JOIN: 'joinin',
+
+    END_TRIM: 'no more!',
+    END_JOIN: 'stopit!',
+
+    TRIM: 'move it or lose it!',
+    JOIN: 'two shall be as one',
+    SPLIT: 'one shall be as two',
+
     PLAYER_UPDATE: 'hi im carl',
     INSERT_CAPTION: 'new cap',
     BEGIN_UPLOAD: 'in progress',
     SERVER_ERROR: 'SERVER_ERROR',
     SERVER_SUCCESS: 'SERVER_SUCCESS',
     SERVER_PROGRESS: 'new percent',
+}
+
+export const split = (chunkIndex, splitTime) => {
+    return {
+        type: ACTIONS.SPLIT_CHUNK,
+        payload: {
+        
+        }
+    }
+}
+
+export const editChunk = (chunkIndex, inputText) => {
+    return {
+        type: ACTIONS.EDIT_CHUNK,
+        payload: {
+            index: chunkIndex,
+            inputText
+        }
+    }
+}
+
+export const join = (destinationChunkIndex) => {
+    return {
+        type: ACTIONS.JOIN,
+        payload: destinationChunkIndex
+    }
+}
+
+export const startJoin = (sourceChunkIndex) => {
+    return {
+        type: ACTIONS.START_JOIN,
+        payload: sourceChunkIndex
+    }
+}
+
+export const startTrim = (chunkIndex, origin, isStart) => {
+    return {
+        type: ACTIONS.START_TRIM,
+        payload: {
+            index: chunkIndex,
+            origin,
+            isStart
+        }
+    }
+}
+
+export const endTrim = () => {
+    return {
+        type: ACTIONS.END_TRIM
+    }
+}
+
+export const trim = (offset) => {
+    return {
+        type: ACTIONS.TRIM,
+        payload: offset
+    }
+
 }
 
 export const jumpToChunk = (chunkIndex) => {

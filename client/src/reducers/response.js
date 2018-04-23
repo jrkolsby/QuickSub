@@ -1,8 +1,7 @@
 const response = {
     "type": "SERVER_SUCCESS",
     "payload": {
-        "audioURL": "full-audio.wav",
-        "videoURL": "full-video.m4v",
+        "videoURL": "grizzly.m4v",
         "directory": "4182ac8a5db5df71173cdd67cc1152613d1ec4635ec8a0c12ff5113f08955568",
         "waveformData": [
             13,
@@ -1896,135 +1895,37 @@ const response = {
         ],
         "chunks": [
             {
-                "start": "0.0",
-                "end": "9.059999999999999",
-                "audioURL": "chunk-00.wav"
+                "start": 7.37,
+                "end": 8.6,
+                "text": "Let me tell you"
             },
             {
-                "start": "9.419999999999991",
-                "end": "10.739999999999963",
-                "audioURL": "chunk-01.wav"
+                "start": 9.59,
+                "end": 10.13,
+                "text": "honestly"
             },
             {
-                "start": "10.799999999999962",
-                "end": "13.769999999999898",
-                "audioURL": "chunk-02.wav"
+                "start": 10.72,
+                "end": 12.12,
+                "text": "camping in grizzly country"
             },
             {
-                "start": "13.979999999999894",
-                "end": "14.699999999999878",
-                "audioURL": "chunk-03.wav"
+                "start": 12.5,
+                "end": 13.42,
+                "text": "is dangerous"
             },
             {
-                "start": "14.789999999999877",
-                "end": "39.450000000000735",
-                "audioURL": "chunk-04.wav"
+                "start": 14.68,
+                "end": 19.54,
+                "text": "people who camp in grizzly country should camp out in the open to let the bears know where the tent is"
             },
+            /*
             {
-                "start": "39.54000000000074",
-                "end": "41.820000000000825",
-                "audioURL": "chunk-05.wav"
+                "start": 0,
+                "end": 0,
+                "text": ""
             },
-            {
-                "start": "42.21000000000084",
-                "end": "48.51000000000108",
-                "audioURL": "chunk-06.wav"
-            },
-            {
-                "start": "48.54000000000108",
-                "end": "50.040000000001136",
-                "audioURL": "chunk-07.wav"
-            },
-            {
-                "start": "50.13000000000114",
-                "end": "51.24000000000118",
-                "audioURL": "chunk-08.wav"
-            },
-            {
-                "start": "53.85000000000128",
-                "end": "58.89000000000147",
-                "audioURL": "chunk-09.wav"
-            },
-            {
-                "start": "58.980000000001475",
-                "end": "60.840000000001545",
-                "audioURL": "chunk-10.wav"
-            },
-            {
-                "start": "64.26000000000167",
-                "end": "65.43000000000171",
-                "audioURL": "chunk-11.wav"
-            },
-            {
-                "start": "66.21000000000174",
-                "end": "72.48000000000198",
-                "audioURL": "chunk-12.wav"
-            },
-            {
-                "start": "72.48000000000198",
-                "end": "74.70000000000206",
-                "audioURL": "chunk-13.wav"
-            },
-            {
-                "start": "75.30000000000209",
-                "end": "82.14000000000235",
-                "audioURL": "chunk-14.wav"
-            },
-            {
-                "start": "82.14000000000235",
-                "end": "86.58000000000251",
-                "audioURL": "chunk-15.wav"
-            },
-            {
-                "start": "86.64000000000252",
-                "end": "94.80000000000283",
-                "audioURL": "chunk-16.wav"
-            },
-            {
-                "start": "95.19000000000284",
-                "end": "98.61000000000297",
-                "audioURL": "chunk-17.wav"
-            },
-            {
-                "start": "98.79000000000298",
-                "end": "99.99000000000302",
-                "audioURL": "chunk-18.wav"
-            },
-            {
-                "start": "100.38000000000304",
-                "end": "102.60000000000312",
-                "audioURL": "chunk-19.wav"
-            },
-            {
-                "start": "102.72000000000313",
-                "end": "104.10000000000318",
-                "audioURL": "chunk-20.wav"
-            },
-            {
-                "start": "104.7600000000032",
-                "end": "107.52000000000331",
-                "audioURL": "chunk-21.wav"
-            },
-            {
-                "start": "107.52000000000331",
-                "end": "109.8900000000034",
-                "audioURL": "chunk-22.wav"
-            },
-            {
-                "start": "110.0700000000034",
-                "end": "113.49000000000353",
-                "audioURL": "chunk-23.wav"
-            },
-            {
-                "start": "113.58000000000354",
-                "end": "115.0800000000036",
-                "audioURL": "chunk-24.wav"
-            },
-            {
-                "start": "115.50000000000361",
-                "end": "119.43000000000376",
-                "audioURL": "chunk-25.wav"
-            }
+            */
         ]
     }
 }

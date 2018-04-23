@@ -25,6 +25,8 @@
          url('../assets/sparks/ttf/Sparks-Bar-Medium.ttf') format('truetype');
 }
 
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 body {
   margin: 0;
   padding: 0;
@@ -36,14 +38,12 @@ div.video-react-control-bar {
     display: none;
 }
 
-#root {
+div.video-react,
+div.dropzone,
+#editor > .waveform {
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-}
-
-#editor {
-    
 }
 
 .dropzone {
@@ -72,6 +72,14 @@ div.video-react-control-bar {
     background: #C5EF99;
 }
 
+.dropzone.minimize {
+    height: 100px;
+}
+
+.dropzone.minimize::before {
+    content: "Drop a new video file"
+}
+
 .video-react {
     outline: none;
 }
@@ -82,22 +90,74 @@ video.video-react-video {
     z-index: 0;
 }
 
-input {
-    margin-top: 20px;
-}
 
 #chunk-editor {
     white-space: nowrap;
     overflow-x: scroll;
     overflow-y: hidden;
-    padding: 40px 0;
+    width: 100%;
+    padding: 40px 30px;
+}
+
+#chunk-editor.trimming *,
+#chunk-editor.trimming {
+    cursor: col-resize !important;
 }
 
 #chunk-editor div.chunk {
     display: inline-block;
+    position: relative;
+    vertical-align: top;
+
     margin-right: 30px;
+    padding: 0 15px;
+    padding-bottom: 30px;
 }
 
+.chunk input {
+    margin-top: 20px;
+    width: 100%;
+    left: 0;
+    display: block;
+    position: absolute;
+    background: none;
+    border: none;
+    outline: none;
+
+    font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+}
+
+.chunk div.data {
+    margin-top: 18px;
+}
+
+.chunk div.data span {
+    font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    vertical-align: top;
+}
+
+.chunk div.data span.end { float: right; }
+
+.chunk div.data span.start { margin-right: 5px; }
+
+.chunk div.handle {
+    position: absolute;
+    cursor: col-resize;
+    width: 20px;
+    top: 0;
+
+    z-index: 6;
+}
+
+.chunk div.handle.start { left: 10px; }
+.chunk div.handle.end { right: 10px; }
+
+.waveform,
+.chunk div.handle {
+    height: 110px;
+}
 
 .waveform {
     font-feature-settings: "calt";
@@ -111,7 +171,6 @@ input {
     z-index: 5;
 
     font-size: 3rem;
-    height: 6rem;
 
     /* Hardware accellerate whoosh */
     -webkit-font-smoothing: subpixel-antialiased;
@@ -125,9 +184,7 @@ input {
     -ms-user-select: none;
     user-select: none;
 
-    pointer-events: none;
-
-    cursor: default;      
+    cursor: grab;
 }
 
 .waveform span {
@@ -137,7 +194,9 @@ input {
     transform: scale(1,10);
     color: black;
     position: relative;
-    top: -3rem;
+    top: -2.6rem;
+
+    pointer-events: none;
 }
 
 .waveform span.chunk {
@@ -145,6 +204,9 @@ input {
 }
 
 .waveform span.playhead {
-    /* font-family: 'Sparks Bar Medium'; */
     color: red;
+}
+
+.chunk .waveform span {
+    font-family: 'Sparks Bar Narrow'; 
 }

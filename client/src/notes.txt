@@ -1,0 +1,11 @@
+If repeating chunks is not set to true, every player update needs to jump to the
+next nearest timecode that is in a chunk. It will have to iterate through all
+chunks every time when it receieves a player update. If the new time is already
+in a chunk, good. If it isn't, iterate through all chunks until it finds a start
+time that is greater than the new time. Jump to this chunk and seek the player.
+
+currently, jump to chunk does not actually cause the player to seek. 
+
+The only way of navigating the timeline is through the inputs. Selecting an input should always jump to the beginning of its chunk. 
+
+IDK...

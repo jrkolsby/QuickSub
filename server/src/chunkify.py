@@ -135,7 +135,6 @@ def vad_collector(sample_rate, frame_duration_ms,
                 voiced_frames = []
     if triggered:
         sys.stdout.write('%s\n' % (frame.timestamp + frame.duration))
-    sys.stdout.write('END')
     # If we have any leftover voiced audio when we run out of input,
     # yield it.
     if voiced_frames:
