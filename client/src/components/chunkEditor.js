@@ -7,10 +7,9 @@ class ChunkEditor extends Component {
         return this.props.chunks.map((chunk, index) => {
 
             var active = false
-            if (index === this.props.currentChunk) {
+
+            if (index === this.props.currentChunk)
                 active = true
-                console.log('focus', index)
-            }
 
             return (
                 <Chunk
@@ -38,6 +37,10 @@ class ChunkEditor extends Component {
 
                     handleSplit={(splitTime) => {
                         this.props.handleSplit(index, splitTime) 
+                    }}
+
+                    handleDelete={() => {
+                        this.props.handleDelete(index)
                     }}
 
                     handleJoin={() => {

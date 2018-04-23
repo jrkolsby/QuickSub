@@ -1,3 +1,5 @@
+import { parse, stringify, stringifyVtt, resync, toMS, toSrtTime, toVttTime } from 'subtitle'
+
 const request = require('superagent');
 
 const UPLOAD_URL = "http://localhost:3008/upload"
@@ -16,6 +18,8 @@ export const ACTIONS = {
     TRIM: 'move it or lose it!',
     JOIN: 'two shall be as one',
     SPLIT: 'one shall be as two',
+    DELETE: 'BEGONE!', 
+    EXPORT: 'Donezo!',
 
     PLAYER_UPDATE: 'hi im carl',
     INSERT_CAPTION: 'new cap',
@@ -23,6 +27,27 @@ export const ACTIONS = {
     SERVER_ERROR: 'SERVER_ERROR',
     SERVER_SUCCESS: 'SERVER_SUCCESS',
     SERVER_PROGRESS: 'new percent',
+}
+
+export const exportSRT = () => {
+    return (dispatch, getState) => {
+        var string = stringify(
+            getState().editor.chunks.map((chunk, index) => {
+                return {
+                    start: chunk.start,
+                    end: chunk.end,
+                    text: chunk.inputText
+                }
+            }))
+
+		var blob = new Blob([string]);
+		var a = window.document.createElement("a");
+		a.href = window.URL.createObjectURL(blob, {type: "text/plain"});
+		a.download = "/filename.srt";
+		document.body.appendChild(a);
+		a.click(); 
+		document.body.removeChild(a);
+    }
 }
 
 export const split = (chunkIndex, splitTime) => {
@@ -33,6 +58,14 @@ export const split = (chunkIndex, splitTime) => {
         }
     }
 }
+
+export const deleteChunk = (chunkIndex) => {
+    return {
+        type: ACTIONS.DELETE,
+        payload: chunkIndex
+    }
+}
+
 
 export const editChunk = (chunkIndex, inputText) => {
     return {
@@ -115,8 +148,7 @@ export const uploadVideo = (videoFile) => {
                 dispatch(res.body) 
             } else {
                 console.log(err)
-            }
-            
+            } 
         })
     }
 }

@@ -15,7 +15,7 @@ let defaultState = {
     videoURL: "",
 
     repeatChunks: false,
-    variableSpeed: true,
+    variableSpeed: false,
 
     uploadPending: false,
 
@@ -30,7 +30,8 @@ let defaultState = {
     trimChunkIndex: 0,
     joinChunkIndex: 0,
 
-    // DEFAULT RESPONSE
+    // DEMO RESPONSE
+/*
     ...response.payload,
 
     audioURL: "http://localhost:3000/"
@@ -40,10 +41,28 @@ let defaultState = {
     videoURL: "http://localhost:3000/"
     + response.payload.directory + "/" 
     + response.payload.videoURL
+*/
 }
 
 const editor = (state=defaultState, action) => {
     switch(action.type) {
+
+        case ACTIONS.EXPORT:
+            
+
+        case ACTIONS.DELETE:
+            var newChunks = state.chunks.slice(0)
+
+            newChunks.splice(action.payload, 1)
+
+            var newCurrentChunk = (state.currentChunk <= action.payload ? 
+                                   state.currentChunk : state.currentChunk - 1)
+
+            return {
+                ...state,
+                chunks: newChunks, 
+                currentChunk: newCurrentChunk
+            }
 
         case ACTIONS.START_JOIN:
             return {
@@ -75,9 +94,9 @@ const editor = (state=defaultState, action) => {
                                (state.chunks[secondIndex].inputText !== "" ?
                                 state.chunks[secondIndex].inputText : "")
 
-            let newChunks = state.chunks.slice(0)
+            var newChunks = state.chunks.slice(0)
 
-            let newCurrentChunk = (state.currentChunk < secondIndex ? 
+            var newCurrentChunk = (state.currentChunk < secondIndex ? 
                                    state.currentChunk : state.currentChunk - 1)
 
             newChunks.splice(secondIndex, 1)

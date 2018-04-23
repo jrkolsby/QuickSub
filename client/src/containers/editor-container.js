@@ -15,7 +15,7 @@ const DROPZONE_REJECT_CLASS = "reject"
 const DROPZONE_MINIMIZE_CLASS = "minimize"
 
 // Characters per minute = 41 words per min * 5 chars per word
-const DEFAULT_WPM = 160
+const DEFAULT_WPM = 40
 const DEFAULT_CPW = 5
 
 class EditorContainer extends Component {
@@ -59,6 +59,9 @@ class EditorContainer extends Component {
     }
 
     componentWillReceiveProps(newProps) {
+        if (newProps.chunks.length == 0)
+            return;
+
         var newChunkIndex = newProps.currentChunk
         var newChunk = newProps.chunks[newChunkIndex]
 
@@ -144,6 +147,9 @@ class EditorContainer extends Component {
                     //chunks={this.props.chunks}
                     length={110}
                 />
+                <button
+                    onClick={this.props.exportSRT}
+                >Export SRT</button>
                 <ChunkEditor
                     chunks={this.props.chunks}
                     currentChunk={this.props.currentChunk}
@@ -162,6 +168,7 @@ class EditorContainer extends Component {
                     handleJoin={this.props.join}
                     handleSplit={this.props.split}
                     handleEdit={this.props.editChunk}
+                    handleDelete={this.props.deleteChunk}
 
                     isTrimming={this.props.isTrimming} 
 

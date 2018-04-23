@@ -37,12 +37,39 @@ class Chunk extends Component {
         let end = "-"
 
         if (this.props.chunk) {
-            start = this.props.chunk.start.toFixed(2)
-            end = this.props.chunk.end.toFixed(2)
+            var startSeconds = this.props.chunk.start.toFixed(2)
+            var endSeconds = this.props.chunk.end.toFixed(2)
+
+            var startMinutes = Math.floor(startSeconds / 60)
+            var endMinutes = Math.floor(endSeconds / 60)
+
+            var startSeconds = (startSeconds % 60).toFixed(2)
+            var endSeconds = (endSeconds % 60).toFixed(2)
+
+            if (startSeconds < 10)
+                startSeconds = "0" + startSeconds
+
+            if (endSeconds < 10)
+                endSeconds = "0" + endSeconds
+
+            if (startMinutes === 0)
+                startMinutes = ""
+            else
+                startMinutes += ":"
+
+            if (endMinutes === 0)
+                endMinutes = ""
+            else
+                endMinutes += ":"
+
+            start = startMinutes + startSeconds
+            end = endMinutes + endSeconds
         }
 
         return (
-            <div className="chunk" draggable="true"
+            <div className={this.props.active ?
+                            "chunk active" : "chunk"}
+                draggable="true"
                 onDragStart={(e) => {
                     this.props.handleStartJoin()
                 }}
@@ -60,6 +87,11 @@ class Chunk extends Component {
                     onMouseDown={(e) => {
                         e.preventDefault()
                         this.props.handleStartTrim(e.clientX, false)
+                    }}
+                ></div>
+                <div className="delete"
+                    onClick={(e) => {
+                        this.props.handleDelete()
                     }}
                 ></div>
                 <Waveform
