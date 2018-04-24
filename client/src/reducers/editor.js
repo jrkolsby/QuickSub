@@ -14,7 +14,7 @@ let defaultState = {
     audioURL: "",
     videoURL: "",
 
-    repeatChunks: false,
+    repeatChunks: true,
     variableSpeed: false,
 
     uploadPending: false,
@@ -31,7 +31,6 @@ let defaultState = {
     joinChunkIndex: 0,
 
     // DEMO RESPONSE
-/*
     ...response.payload,
 
     audioURL: "http://localhost:3000/"
@@ -41,7 +40,6 @@ let defaultState = {
     videoURL: "http://localhost:3000/"
     + response.payload.directory + "/" 
     + response.payload.videoURL
-*/
 }
 
 const editor = (state=defaultState, action) => {

@@ -15,7 +15,7 @@ const DROPZONE_REJECT_CLASS = "reject"
 const DROPZONE_MINIMIZE_CLASS = "minimize"
 
 // Characters per minute = 41 words per min * 5 chars per word
-const DEFAULT_WPM = 40
+const DEFAULT_WPM = 140
 const DEFAULT_CPW = 5
 
 class EditorContainer extends Component {

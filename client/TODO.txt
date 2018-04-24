@@ -8,3 +8,8 @@ Clicking on a chunk should take you there in the video
 MODES
 Text mode: input text
 Time mode: trim, join, split, delete (show visible handles for these things)
+
+Make it so the inactive chunks are opaque
+
+Remove the join functionality
+Implement split functionality
