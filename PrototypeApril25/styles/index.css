@@ -1,0 +1,145 @@
+@font-face {
+    font-family: 'Sparks Bar Extranarrow';
+    src: url('../assets/sparks/eot/Sparks-Bar-Extranarrow.eot');
+    src: url('../assets/sparks/eot/Sparks-Bar-Extranarrow.eot?#iefix') format('embedded-opentype'),
+         url('../assets/sparks/woff2/Sparks-Bar-Extranarrow.woff2') format('woff2'),
+         url('../assets/sparks/woff/Sparks-Bar-Extranarrow.woff') format('woff'),
+         url('../assets/sparks/ttf/Sparks-Bar-Extranarrow.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Sparks Bar Narrow';
+    src: url('../assets/sparks/eot/Sparks-Bar-Narrow.eot');
+    src: url('../assets/sparks/eot/Sparks-Bar-Narrow.eot?#iefix') format('embedded-opentype'),
+         url('../assets/sparks/woff2/Sparks-Bar-Narrow.woff2') format('woff2'),
+         url('../assets/sparks/woff/Sparks-Bar-Narrow.woff') format('woff'),
+         url('../assets/sparks/ttf/Sparks-Bar-Narrow.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Sparks Bar Medium';
+    src: url('../assets/sparks/eot/Sparks-Bar-Medium.eot');
+    src: url('../assets/sparks/eot/Sparks-Bar-Medium.eot?#iefix') format('embedded-opentype'),
+         url('../assets/sparks/woff2/Sparks-Bar-Medium.woff2') format('woff2'),
+         url('../assets/sparks/woff/Sparks-Bar-Medium.woff') format('woff'),
+         url('../assets/sparks/ttf/Sparks-Bar-Medium.ttf') format('truetype');
+}
+
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+html {
+    font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+}
+
+.waveform {
+	font-family: 'Sparks Bar Narrow';
+    font-size: 46px;
+    height: 36px;
+    
+
+    white-space: nowrap;
+}
+
+.waveform .playhead {
+    color: red;
+}
+
+.waveform .splithead {
+    color: yellow;
+}
+
+.waveform.main {
+    color: #333;
+    margin-bottom: 16px;
+}
+
+.chunk .waveform {
+    color: pink;
+    transform: scaleY(2);
+    height: 35px;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.middle {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%)
+}
+
+header,
+#player {
+    width: 100%;
+    max-width: 512px;
+    margin: 0 auto;
+}
+
+#title {
+    display: inline-block;
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 30px;
+}
+
+.video-react {
+    width: 100%;
+}
+
+.dropzone {
+
+}
+
+
+#editor {
+    width: 100%;
+    margin-top: 50px;
+    display: block;
+}
+
+.icon:before {
+    font-size: 16px;
+    vertical-align: bottom;
+}
+
+.icon {
+    font-weight: 800;
+    text-transform: uppercase;
+    vertical-align: middle;
+    font-size: 12px;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.icon.active {
+    color: #333;
+}
+
+.icon.error {
+    color: red;
+}
+
+.controls {
+    overflow: auto;
+}
+
+.icon { margin-right: 16px; }
+
+.icon:last-child { margin-right: 0; }
+
+.icon.rate:before,
+.icon.type:before,
+.icon.time:before,
+.icon.upload:before,
+.icon.volume:before,
+.icon.download:before,
+.icon.captions:before {
+    margin-right: 8px;
+}
+
+

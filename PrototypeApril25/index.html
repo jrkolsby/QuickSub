@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="styles/reset.css">
+    <link rel="stylesheet" href="styles/icons.css">
+    <link rel="stylesheet" href="styles/index.css">
+</head>
+<body>
+    <header>
+        <div id="title">QuickSub</div>
+        <div class="toolbar">
+            <span class="left">
+                <span class="icon upload active">Upload Video</span>
+                <span class="icon download active">Paste Link</span>
+            </span>
+
+            <span class="right">
+                <span class="notification"></span>
+                <span class="icon captions active">Download Captions</span>
+            </span>
+        </div>
+    </header>
+    <div id="player">
+        <div class="video-react">
+            <video class="video-react-video" src=""></video>
+            <div class="video-react-loading-spinner"></div>
+            <button class="video-react-big-play-button"></button>
+        </div> 
+        <div class="dropzone">
+
+        </div>
+        <div class="waveform main">
+            <span class="playhead">{25}</span><span class="splithead">{26}</span><span class="partition">{21,20,30,21,26,19,21,19,30,23,28,19,27,19,26,18,29,15,27,16,29,19,27,18,30,15,29,23,31,24,28,17,29,16,25,13,24,24,31,18,27,13,24,12,25,17,26,19,25,20,30,16,23,17,100,18,25,19,27,19,26,19,25,8,8,15,31,15,27,19,27,17,25,2}</span>
+        </div>
+        <div class="controls"> 
+            <span class="left"> 
+                <span class="icon repeat"></span> 
+                <span class="icon rate">1.2</span>
+                <span class="icon volume active">80</span>
+            </span>
+
+            <span class="middle">
+                <span class="icon previous active"></span>
+                <span class="icon play active"></span>
+                <span class="icon next active"></span>
+            </span>
+
+            <span class="right">
+                <span class="icon type active">Type</span>
+                <span class="icon time">Time</span>
+            </span>
+
+
+        </div>
+    </div>
+    <div id="editor">
+        <div class="chunk">
+            <div class="handle start"></div>
+            <div class="handle end"></div>
+            <div class="delete"></div>
+            <div class="waveform">
+                <span class="playhead">{25}</span><span class="splithead">{26}</span><span class="partition">{21,20,30,21,26,19,21,19,30,23,28,19,27,19,26,18,29,15,27,16,29,19,27,18,30,15,29,100,31,24,28,17,29,16,25,13,24,24,31,18,27,13,24,12,25,17,26,19,25,20,30,16,23,17,25,18,25,19,27,19,26,19,25,8,8,15,31,15,27,19,27,17,25,2}</span> 
+            </div>
+            <div class="data">
+                <span class="start">1:24.98</span>
+                <span class="end">1:40.36</span> 
+            </div>
+            <textarea rows="2">
+            </textarea>
+        </div>
+
+    </div>
+</body>
+</html>
