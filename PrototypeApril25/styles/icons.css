@@ -17,6 +17,7 @@
     font-variant: normal;
     text-transform: none;
 
+    /* Better font rendering */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
