@@ -1,4 +1,4 @@
 node_modules
 .DS_STORE
 
-static
+static/content/

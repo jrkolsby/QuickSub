@@ -29,7 +29,7 @@ class Header extends Component {
                                         "icon captions active"}
                             onClick={() => {
                                 if (!this.props.isUploading)
-                                    this.props.handleExport
+                                    this.props.handleExport()
                             }}
                         >Download Captions</span>
                     </span>

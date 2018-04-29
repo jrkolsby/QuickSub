@@ -54,16 +54,15 @@ class ChunkEditor extends Component {
     render() {
         //console.log('chunkEditor props', this.props)
         return (
-            <div id="editor"
-                className={this.props.isTrimming ? 'trimming' : null}
+            <div
+                className={"editor" + 
+                          (this.props.isUploading ? 
+                          "" : " active") +
+                          (this.props.timeMode ? 
+                          " time" : "")}
                 onMouseMove={(e) => {
-                    if (this.props.isTrimming) {
-                        if (e.clientX === 0) {
-                            this.props.handleTrim(-1) 
-                        } else { 
-                            this.props.handleTrim(e.clientX)
-                        }
-                    }
+                    if (this.props.isTrimming)
+                        this.props.handleTrim(e.clientX)
                 }}
                 onMouseUp={(e) => {
                     this.props.handleEndTrim()

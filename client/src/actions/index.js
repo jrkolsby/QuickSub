@@ -17,6 +17,12 @@ export const ACTIONS = {
     END_VOLUME: 'endVolume',
     VOLUME: 'volume',
 
+    TOGGLE_PLAY: 'togglePlay',
+    FORCE_PLAY: 'forcePlay',
+    TOGGLE_REPEAT: 'toggleRepeat',
+    TOGGLE_RATE: 'toggleRate',
+    TOGGLE_MODE: 'toggleMode',
+
     START_TRIM: 'startTrim',
     TRIM: 'trim',
     END_TRIM: 'endTrim',

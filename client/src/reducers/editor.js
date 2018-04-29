@@ -8,10 +8,9 @@ let defaultState = {
     chunks: [],
     currentChunk: 0,
 
-    repeatChunks: true,
+    repeatChunks: false,
     variableSpeed: false,
     
-    typeMode: true,
     timeMode: false,
 
     isTrimming: false,
@@ -22,11 +21,33 @@ let defaultState = {
     trimChunkIndex: 0,
     joinChunkIndex: 0,
 
+    // DEMO
     //...response.payload,
 }
 
 const editor = (state=defaultState, action) => {
     switch(action.type) {
+
+        case ACTIONS.TOGGLE_REPEAT:
+            return {
+                ...state,
+
+                repeatChunks: !state.repeatChunks
+            }
+
+        case ACTIONS.TOGGLE_RATE:
+            return {
+                ...state,
+
+                variableSpeed: !state.variableSpeed 
+            }
+
+        case ACTIONS.TOGGLE_MODE:
+            return {
+                ...state,
+
+                timeMode: !state.timeMode,
+            }
 
         case ACTIONS.DELETE:
             var newChunks = state.chunks.slice(0)
@@ -198,8 +219,13 @@ const editor = (state=defaultState, action) => {
 
         case ACTIONS.JUMP_CHUNK:
             //console.log('jump chunk action', action.payload)
-            let newChunk = (action.payload > (state.chunks.length - 1) ? 0 :
-                            action.payload)
+            let newChunk = action.payload
+
+            if (newChunk > (state.chunks.length - 1))
+                newChunk = state.chunks.length - 1
+
+            if (newChunk < 0)
+                newChunk = 0
                 
             return {
                 ...state,

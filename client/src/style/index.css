@@ -48,6 +48,13 @@ html {
 html,
 body {
 	overflow-x: hidden;
+
+	-webkit-touch-callout: none; 
+	-webkit-user-select: none; 
+	-khtml-user-select: none; 
+	-moz-user-select: none; 
+	-ms-user-select: none;
+	user-select: none; 
 }
 
 textarea {
@@ -75,14 +82,7 @@ textarea {
 	position: relative;
 	z-index: -5;
 
-	cursor: default;
-
-	-webkit-touch-callout: none; 
-	-webkit-user-select: none; 
-	-khtml-user-select: none; 
-	-moz-user-select: none; 
-	-ms-user-select: none;
-	user-select: none; 
+    pointer-events: none !important;
 
     /* Better font rendering */
     -webkit-font-smoothing: antialiased;
@@ -107,7 +107,6 @@ textarea {
 }
 
 .chunk .waveform {
-    color: pink;
     transform: scaleY(2);
 }
 
@@ -125,6 +124,10 @@ textarea {
     transform: translateX(-50%)
 }
 
+header {
+    padding-top: 16px;
+}
+
 header,
 #player {
     width: 100%;
@@ -136,7 +139,7 @@ header,
     display: inline-block;
     font-size: 48px;
     font-weight: 800;
-    margin-bottom: 30px;
+    margin-bottom: 16px;
 }
 
 .notification {
@@ -162,9 +165,11 @@ header,
 .video-react,
 .video-react video {
     position: relative;
+    line-height: 0;
     width: 100%;
 }
 
+.video-react-control-text,
 .video-react-control-bar {
     display: none;
 }
@@ -179,6 +184,23 @@ header,
     left: 0;
     width: 100%;
     height: 100%;
+}
+
+.video-react-big-play-button:before {
+    content: "\e905";
+
+    speak: none;
+    font-family: 'batch' !important;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+
+    /* Better font rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
 }
 
 .big-play-button-hide {
@@ -205,9 +227,19 @@ header,
     background: rgba(0,0,0,0.1);
 }
 
-#editor {
+.editor {
     width: 100%;
     display: block;
+}
+
+.toolbar,
+.controls {
+    overflow: auto;
+}
+
+#player,
+.controls {
+    margin-top: 16px;
 }
 
 .icon:before {
@@ -225,22 +257,28 @@ header,
     color: #aaa;
 }
 
+.icon.pause:before {
+    font-size: 24px;
+    line-height: 16px;
+    position: relative;
+}
+
+.icon.pause:before {
+    margin: -5px;
+}
+
+.controls.voluming,
+.controls.voluming *,
+.icon.volume {
+    cursor: col-resize;
+}
+
 .icon.active {
     color: #333;
 }
 
 .icon.error {
     color: #FF6564;
-}
-
-.toolbar,
-.controls {
-    overflow: auto;
-}
-
-#player,
-.controls {
-    margin-top: 16px;
 }
 
 .icon { margin-right: 16px; }
@@ -256,15 +294,20 @@ header,
     margin-right: 8px;
 }
 
-#editor {
+.editor {
 	width: 100%;
-	padding: 0 32px;
+	padding: 0 128px;
     margin-top: 32px;
 	white-space: nowrap;
 	overflow-x: scroll;
+    display: none;
 }
 
-#editor.trimming {
+.editor.active {
+    display: block;
+}
+
+.editor.trimming {
     cursor: col-resize;
 }
 
@@ -295,8 +338,13 @@ header,
 }
 
 .chunk .data span {
-    font-weight: 800;
+    font-weight: 600;
     font-size: 12px;
+    color: #333;
+}
+
+.editor.time .data span {
+    font-weight: 800;
     letter-spacing: -1px;
 }
 
@@ -369,3 +417,14 @@ header,
     transform: translateX(-50%);
 }
 
+.editor .sidehandle,
+.editor .handle,
+.editor .delete {
+    display: none;
+}
+
+.editor.time .sidehandle,
+.editor.time .handle,
+.editor.time .delete {
+    display: block;
+}

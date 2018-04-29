@@ -1,7 +1,8 @@
 import {ACTIONS} from '../actions';
 import response from './response'
 
-let SERVER_URL = "http://localhost:3008/"
+let SERVER_URL = "http://localhost:3008/content/"
+let PIX_PER_DB = 0.5;
 
 let defaultState = {
     audioURL: "",
@@ -21,6 +22,13 @@ let defaultState = {
     isPasting: false,
     downloadPercent: 0,
 
+    volume: 80,
+    volumeOrigin: 0,
+    originalVolume: 0,
+    isVoluming: false,
+
+    isPlaying: false,
+
     // DEMO RESPONSE
     /*
     ...response.payload,
@@ -39,7 +47,56 @@ let defaultState = {
 
 const player = (state=defaultState, action) => {
     switch(action.type) {
-        case ACTIONS.NEW_UPLOAD:
+
+        case ACTIONS.TOGGLE_PLAY:
+            return {
+                ...state,
+
+                isPlaying: !state.isPlaying
+            }
+
+        case ACTIONS.FORCE_PLAY:
+            return {
+                ...state,
+
+                isPlaying: true
+            }
+
+        case ACTIONS.START_VOLUME:
+            return {
+                ...state,
+
+                isVoluming: true,
+                volumeOrigin: action.payload,
+                originalVolume: state.volume
+            }
+
+        case ACTIONS.END_VOLUME:
+            return {
+                ...state,
+
+                isVoluming: false
+            }
+
+        case ACTIONS.VOLUME:
+            let offset = action.payload
+            let origin = state.volumeOrigin
+            let delta = Math.floor((origin - offset) / PIX_PER_DB)
+
+            let newVolume = state.originalVolume - delta
+            if (newVolume < 0) 
+                newVolume = 0
+
+            if (newVolume > 100)
+                newVolume = 100
+
+            return {
+                ...state,
+
+                volume: newVolume
+            }
+
+        case  ACTIONS.NEW_UPLOAD:
             return {
                 ...state,
 

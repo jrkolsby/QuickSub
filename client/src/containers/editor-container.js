@@ -30,6 +30,7 @@ class EditorContainer extends Component {
                 currentChunk={this.props.editor.currentChunk}
                 isTrimming={this.props.editor.isTrimming} 
                 chunks={this.props.editor.chunks}
+                timeMode={this.props.editor.timeMode}
 
                 // Player props
                 duration={this.props.player.duration}

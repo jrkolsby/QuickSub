@@ -39,6 +39,9 @@ class PlayerContainer extends Component {
             state.currentTime !== prevState.currentTime) {
             this.props.playerUpdate(state)
         }
+
+        if (!state.paused && state.paused !== prevState.paused)
+            this.props.forcePlay()
     }
 
     handleDrop(acceptedFiles, rejectedFiles) {
@@ -88,8 +91,13 @@ class PlayerContainer extends Component {
                 // If in silence after chunk...
                 if (nextChunk && newTime > end && 
                     newTime < nextChunk.start) {
-                    this.props.jumpToChunk(newChunkIndex+1)
-                    this.refs.player.seek(nextChunk.start)
+
+                    if (newChunkIndex == newProps.editor.chunks.length-1) {
+                        this.refs.player.pause()
+                    } else {
+                        this.props.jumpToChunk(newChunkIndex+1)
+                        this.refs.player.seek(nextChunk.start) 
+                    }
                 } else {
                     this.refs.player.seek(start)
                 }
@@ -97,14 +105,25 @@ class PlayerContainer extends Component {
 
         } 
 
-        if (newProps.editor.variableSpeed) {
+        if (newProps.editor.variableSpeed && 
+            newChunk.text !== "") {
             let interval = (end - start)/60
             let wordCount = newChunk.text.length / DEFAULT_CPW
 
             let actualWPM = wordCount / interval
 
             this.refs.player.playbackRate = DEFAULT_WPM / actualWPM 
+        } else {
+            this.refs.player.playbackRate = 1
         }
+
+        if (newProps.player.isPlaying && player.paused)
+            this.refs.player.play()
+
+        if (!newProps.player.isPlaying && !player.paused)
+            this.refs.player.pause()
+
+        this.refs.player.volume = (this.props.player.volume / 100)
     }
 
     componentWillUpdate() {
@@ -128,9 +147,9 @@ class PlayerContainer extends Component {
                     rejectClassName={DROPZONE_REJECT_CLASS}
                     multiple={false}
                 />
-                <div className={this.props.player.isUploading ?
-                                "player" : "player" + " " +
-                                ACTIVE_CLASS}
+                <div className={"player" + 
+                                (this.props.player.isUploading ?
+                                "" : " " + ACTIVE_CLASS)}
                 >
                     <Player 
                         ref="player"
@@ -151,40 +170,80 @@ class PlayerContainer extends Component {
                     //chunks={this.props.chunks}
                     length={74}
                 />
-                <div className="controls"
-                    onMouseMove={this.props.volume}
+                <div className={"controls" +
+                                (this.props.player.isVoluming ? 
+                                " voluming" : "")}
+                    onMouseMove={(e) => {
+                        if (this.props.player.isVoluming)
+                            this.props.volume(e.clientX)
+                    }}
                     onMouseUp={this.props.endVolume}
+                    onMouseLeave={this.props.endVolume}
                 > 
                     <span className="left"> 
-                        <span className="icon repeat"
+                        <span className={"icon repeat" + 
+                                        (this.props.editor.repeatChunks ?
+                                        " " + ACTIVE_CLASS : "")}
                             onClick={this.props.toggleRepeat}
                         ></span> 
-                        <span className="icon rate"
+                        <span className={"icon rate" + 
+                                        (this.props.editor.variableSpeed ?
+                                        " " + ACTIVE_CLASS : "")}
                             onClick={this.props.toggleRate}
-                        >1.2</span>
-                        <span className="icon volume active"
-                            onMouseDown={this.props.startVolume}
-                        >80</span>
+                        ></span>
+                        <span className={"icon volume" + 
+                                        (this.props.player.isUploading ?
+                                        "" : " " + ACTIVE_CLASS)}
+                            onMouseDown={(e) => {
+                                this.props.startVolume(e.clientX)
+                            }}
+                        >{this.props.player.volume}</span>
                     </span>
 
                     <span className="middle">
-                        <span className="icon previous active"
-                            onClick={this.props.jumpToLastChunk}
+                        <span className={"icon previous" + 
+                                        (this.props.player.isUploading ?
+                                        "" : " " + ACTIVE_CLASS)}
+                            onClick={() => {
+                                this.props.jumpToChunk(
+                                    this.props.editor.currentChunk - 1
+                                )
+                            }}
                         ></span>
-                        <span className="icon play active"
+                        <span className={"icon " +
+                                        (this.props.player.isPlaying ?
+                                        "pause" : "play") + 
+                                        (this.props.player.isUploading ?
+                                        "" : " " + ACTIVE_CLASS)}
                             onClick={this.props.togglePlay}
                         ></span>
-                        <span className="icon next active"
-                            onClick={this.props.jumpToNextChunk}
+                        <span className={"icon next" + 
+                                        (this.props.player.isUploading ?
+                                        "" : " " + ACTIVE_CLASS)}
+                            onClick={() => {
+                                this.props.jumpToChunk(
+                                    this.props.editor.currentChunk + 1
+                                )
+                            }}
                         ></span>
                     </span>
 
                     <span className="right">
-                        <span className="icon type active"
-                            onClick={this.props.toggleMode}
+                        <span className={"icon type" + 
+                                        (this.props.editor.timeMode ?
+                                        "" : " " + ACTIVE_CLASS)}
+                            onClick={() => {
+                                if (this.props.editor.timeMode)
+                                    this.props.toggleMode()
+                            }}
                         >Type</span>
-                        <span className="icon time"
-                            onClick={this.props.toggleMode}
+                        <span className={"icon time" + 
+                                        (this.props.editor.timeMode ?
+                                        " " + ACTIVE_CLASS : "")}
+                            onClick={() => {
+                                if (!this.props.editor.timeMode)
+                                    this.props.toggleMode()
+                            }}
                         >Time</span>
                     </span>
                 </div>

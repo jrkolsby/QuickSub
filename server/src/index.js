@@ -7,13 +7,13 @@ const fs = require('fs')
 const crypto = require('crypto')
 const session = require('express-session')
 const Busboy = require('busboy')
-//const fileUpload = require('express-fileupload');
 
 require('./actions')
 require('./secret')
 
 const PORT = 3008
-const STATIC_DIRECTORY = "./static"
+const STATIC_DIRECTORY = "./static/"
+const CONTENT_DIRECTORY = STATIC_DIRECTORY + "/content/"
 const VIDEO_FILENAME = "full-video"
 const AUDIO_FILENAME = "full-audio"
 const AUDIO_EXTENSION = ".wav"
@@ -165,7 +165,7 @@ app.post('/upload', function(req, res) {
 	// THIS IS REQUIRED TO PRESERVE SESSION STORAGE
 	if (req.session.directory) {
 		sessionDirectory = req.session.directory
-		localSessionDirectory = STATIC_DIRECTORY + "/" + sessionDirectory
+		localSessionDirectory = CONTENT_DIRECTORY + "/" + sessionDirectory
 
 		req.session.views ++;
 	} else {
@@ -173,7 +173,7 @@ app.post('/upload', function(req, res) {
 		let recursiveHash = (i) => {
 			var exists = false
 			var name = hash(i.toString(), req.session.id)
-			fs.open(STATIC_DIRECTORY + "/" + name, 'r', (err, fd) => {
+			fs.open(CONTENT_DIRECTORY + "/" + name, 'r', (err, fd) => {
 				if (err)
 					exists = true
 			})
@@ -185,7 +185,7 @@ app.post('/upload', function(req, res) {
 
 		var newDirectory = recursiveHash(0)
 		sessionDirectory = newDirectory
-		localSessionDirectory = STATIC_DIRECTORY + "/" + sessionDirectory
+		localSessionDirectory = CONTENT_DIRECTORY + "/" + sessionDirectory
 
 		req.session.directory = sessionDirectory
 		req.session.views = 1

@@ -151,12 +151,9 @@ class Waveform extends Component {
 
         if (this.props.isPercent) {
             return (
-                this.props.percent
-                /*
                 <div className="waveform">
                     {this.renderPercent()} 
                 </div>
-                */
             ) 
         } 
 
