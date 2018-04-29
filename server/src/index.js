@@ -96,13 +96,13 @@ function formatChunks(chunkStream) {
 }
 
 function generateChunks(audioFile, successCallback, errorCallback) {
-    let command = 'python ./src/chunkify.py 1 ' + audioFile
+    let command = 'python3 ./src/chunkify.py 1 ' + audioFile
     
     console.log(command)
 
     exec(command, (err, stdout, stderr) => {
         if (err) {
-            errorCallback("Could not generate chunks")
+            errorCallback("Could not generate chunks: " + err)
         } else {
             var chunks = formatChunks(stdout)
             for (var i = 0; i < chunks.length; i++) {
@@ -128,7 +128,7 @@ function generateWaveform(audioFile, successCallback, errorCallback) {
 
     exec(command, (err, stdout, stderr) => {
         if (err) {
-            errorCallback("Could not generate waveform")
+            errorCallback("Could not generate waveform: " + err)
         } else {
             var contents = fs.readFileSync(output)
             var json = JSON.parse(contents)
@@ -198,7 +198,7 @@ app.post('/upload', function(req, res) {
 	busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
 
 		file.on('data', function(data) {
-			console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
+			//console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
 		});
 
 		file.on('end', function() {

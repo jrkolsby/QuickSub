@@ -1,0 +1,371 @@
+/* COLORS: */
+
+/*
+
+RED = FF6564
+YELLOW = FFE53C
+PINK = FFBCCA
+
+BLACK = 333
+GREY = AAA
+
+*/
+
+@font-face {
+    font-family: 'Sparks Bar Extranarrow';
+    src: url('../assets/sparks/eot/Sparks-Bar-Extranarrow.eot');
+    src: url('../assets/sparks/eot/Sparks-Bar-Extranarrow.eot?#iefix') format('embedded-opentype'),
+         url('../assets/sparks/woff2/Sparks-Bar-Extranarrow.woff2') format('woff2'),
+         url('../assets/sparks/woff/Sparks-Bar-Extranarrow.woff') format('woff'),
+         url('../assets/sparks/ttf/Sparks-Bar-Extranarrow.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Sparks Bar Narrow';
+    src: url('../assets/sparks/eot/Sparks-Bar-Narrow.eot');
+    src: url('../assets/sparks/eot/Sparks-Bar-Narrow.eot?#iefix') format('embedded-opentype'),
+         url('../assets/sparks/woff2/Sparks-Bar-Narrow.woff2') format('woff2'),
+         url('../assets/sparks/woff/Sparks-Bar-Narrow.woff') format('woff'),
+         url('../assets/sparks/ttf/Sparks-Bar-Narrow.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Sparks Bar Medium';
+    src: url('../assets/sparks/eot/Sparks-Bar-Medium.eot');
+    src: url('../assets/sparks/eot/Sparks-Bar-Medium.eot?#iefix') format('embedded-opentype'),
+         url('../assets/sparks/woff2/Sparks-Bar-Medium.woff2') format('woff2'),
+         url('../assets/sparks/woff/Sparks-Bar-Medium.woff') format('woff'),
+         url('../assets/sparks/ttf/Sparks-Bar-Medium.ttf') format('truetype');
+}
+
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+html {
+    font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+    color: #333;
+}
+
+html,
+body {
+	overflow-x: hidden;
+}
+
+textarea {
+	resize: none;
+	border: none;
+	outline: none;
+}
+
+/*
+.dropzone,
+.player {
+    transition: 0.2s height ease-in-out;
+    -o-transition: 0.2s height ease-in-out;
+    -moz-transition: 0.2s height ease-in-out;
+    -webkit-transition: 0.2s height ease-in-out;
+}
+*/
+
+.waveform {
+	font-family: 'Sparks Bar Narrow';
+    font-size: 46px;
+    height: 36px;
+    
+    white-space: nowrap;
+	position: relative;
+	z-index: -5;
+
+	cursor: default;
+
+	-webkit-touch-callout: none; 
+	-webkit-user-select: none; 
+	-khtml-user-select: none; 
+	-moz-user-select: none; 
+	-ms-user-select: none;
+	user-select: none; 
+
+    /* Better font rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.waveform .playhead {
+    color: red;
+}
+
+.waveform .splithead {
+    color: #FFE53C
+}
+
+.waveform .partition {
+    color: pink;
+}
+
+.waveform.main {
+    color: #333;
+    margin-bottom: 16px;
+}
+
+.chunk .waveform {
+    color: pink;
+    transform: scaleY(2);
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.middle {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%)
+}
+
+header,
+#player {
+    width: 100%;
+    max-width: 512px;
+    margin: 0 auto;
+}
+
+#title {
+    display: inline-block;
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 30px;
+}
+
+.notification {
+    padding: 0 10px;
+    font-size: 12px;
+}
+
+.notification.error {
+    color: #FF6564;
+}
+
+.player {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 0;
+}
+
+.player.active {
+    height: auto;
+}
+
+.video-react,
+.video-react video {
+    position: relative;
+    width: 100%;
+}
+
+.video-react-control-bar {
+    display: none;
+}
+
+.video-react-big-play-button {
+    position: absolute;
+    background: rgba(0,0,0,0.5);
+    border: none;
+    outline: none;
+    color: white;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.big-play-button-hide {
+    display: none;
+}
+
+.dropzone {
+    width: 448px;
+    height: 320px;
+    margin: 48px auto;
+    margin-bottom: 16px;
+    border-radius: 9px;
+    border: 4px dashed #979797;
+
+}
+
+.dropzone.minimize {
+    height: 0;
+    margin: 0;
+    border: none;    
+}
+
+.dropzone.active {
+    background: rgba(0,0,0,0.1);
+}
+
+#editor {
+    width: 100%;
+    display: block;
+}
+
+.icon:before {
+    font-size: 16px;
+    vertical-align: bottom;
+}
+
+.icon {
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+    vertical-align: middle;
+    font-size: 12px;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.icon.active {
+    color: #333;
+}
+
+.icon.error {
+    color: #FF6564;
+}
+
+.toolbar,
+.controls {
+    overflow: auto;
+}
+
+#player,
+.controls {
+    margin-top: 16px;
+}
+
+.icon { margin-right: 16px; }
+.icon:last-child { margin-right: 0; }
+
+.icon.rate:before,
+.icon.type:before,
+.icon.time:before,
+.icon.upload:before,
+.icon.volume:before,
+.icon.download:before,
+.icon.captions:before {
+    margin-right: 8px;
+}
+
+#editor {
+	width: 100%;
+	padding: 0 32px;
+    margin-top: 32px;
+	white-space: nowrap;
+	overflow-x: scroll;
+}
+
+#editor.trimming {
+    cursor: col-resize;
+}
+
+.chunk {
+    position: relative;
+	display: inline-block;
+    vertical-align: top;
+    height: 160px;
+	margin-right: 32px;
+}
+
+.chunk:last-child {
+	margin-right: 0;
+}
+
+.chunk .waveform {
+    margin-top: 32px;
+    margin-bottom: 16px;
+}
+
+.chunk .data .start { float: left; }
+.chunk .data .end { float: right; }
+
+.chunk .data {
+    overflow: auto;
+    padding-top: 5px;
+    margin-bottom: 6px;
+}
+
+.chunk .data span {
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: -1px;
+}
+
+.chunk .data .start {
+    margin-right: 24px;
+}
+
+.chunk textarea {
+    font-weight: 600;
+    min-width: 100px;
+    position: absolute;
+    top: 112px;
+    width: 100%;
+}
+
+.chunk .delete,
+.chunk .handle,
+.chunk .sidehandle {
+    position: absolute;
+}
+
+.chunk .handle,
+.chunk .sidehandle { 
+    color: #ddd;
+}
+
+.chunk .delete {
+    color: #FF6564;
+}
+
+.chunk .icon {
+    margin-right: 0;
+}
+
+.chunk .handle {
+    top: 36px;
+    padding: 10px 0;
+    cursor: col-resize;
+}
+
+.chunk .handle:before {
+    font-size: 26px;
+}
+
+.chunk .sidehandle {
+    cursor: grabbing;
+}
+
+.chunk .delete:before,
+.chunk .sidehandle:before {
+    font-size: 10px;
+}
+
+.chunk .handle.start {
+    left: -12px;
+}
+
+.chunk .handle.end {
+    right: -12px;
+}
+
+.chunk .handle.delete {
+    top: 0;
+    left: 0;
+}
+
+.chunk .sidehandle.move {
+    top: 86px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
