@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="16px" viewBox="0 0 14 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desktop" transform="translate(-344.000000, -576.000000)" fill="#333333" fill-rule="nonzero">
+            <g id="Toolbar" transform="translate(256.000000, 576.000000)">
+                <path d="M100.555325,0 C100.208121,0 99.8936634,0.128484848 99.6446977,0.334060606 L94.7467668,4.36024242 L89.9571865,4.36024242 C89.1611704,4.36654545 88.5163636,5.01624242 88.5163636,5.81818182 L88.5163636,10.6666667 C88.5163636,11.4700606 89.1630966,12.1212121 89.961039,12.1212121 L94.7881808,12.1212121 L99.705374,15.721697 C99.9466348,15.8938182 100.237496,16 100.555325,16 C101.353267,16 102,15.3488485 102,14.5454545 L102,1.45454545 C102,0.651151515 101.353267,0 100.555325,0 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

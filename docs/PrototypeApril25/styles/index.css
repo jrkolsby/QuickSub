@@ -1,0 +1,300 @@
+/* COLORS: */
+
+/*
+
+RED = FF6564
+YELLOW = FFE53C
+PINK = FFBCCA
+
+BLACK = 333
+GREY = AAA
+
+*/
+
+@font-face {
+    font-family: 'Sparks Bar Extranarrow';
+    src: url('../assets/sparks/eot/Sparks-Bar-Extranarrow.eot');
+    src: url('../assets/sparks/eot/Sparks-Bar-Extranarrow.eot?#iefix') format('embedded-opentype'),
+         url('../assets/sparks/woff2/Sparks-Bar-Extranarrow.woff2') format('woff2'),
+         url('../assets/sparks/woff/Sparks-Bar-Extranarrow.woff') format('woff'),
+         url('../assets/sparks/ttf/Sparks-Bar-Extranarrow.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Sparks Bar Narrow';
+    src: url('../assets/sparks/eot/Sparks-Bar-Narrow.eot');
+    src: url('../assets/sparks/eot/Sparks-Bar-Narrow.eot?#iefix') format('embedded-opentype'),
+         url('../assets/sparks/woff2/Sparks-Bar-Narrow.woff2') format('woff2'),
+         url('../assets/sparks/woff/Sparks-Bar-Narrow.woff') format('woff'),
+         url('../assets/sparks/ttf/Sparks-Bar-Narrow.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Sparks Bar Medium';
+    src: url('../assets/sparks/eot/Sparks-Bar-Medium.eot');
+    src: url('../assets/sparks/eot/Sparks-Bar-Medium.eot?#iefix') format('embedded-opentype'),
+         url('../assets/sparks/woff2/Sparks-Bar-Medium.woff2') format('woff2'),
+         url('../assets/sparks/woff/Sparks-Bar-Medium.woff') format('woff'),
+         url('../assets/sparks/ttf/Sparks-Bar-Medium.ttf') format('truetype');
+}
+
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+html {
+    font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+    color: #333;
+}
+
+html,
+body {
+	overflow-x: hidden;
+}
+
+textarea {
+	resize: none;
+	border: none;
+	outline: none;
+}
+
+.waveform {
+	font-family: 'Sparks Bar Narrow';
+    font-size: 46px;
+    height: 36px;
+    
+    white-space: nowrap;
+	position: relative;
+	z-index: -5;
+
+	cursor: default;
+
+	-webkit-touch-callout: none; 
+	-webkit-user-select: none; 
+	-khtml-user-select: none; 
+	-moz-user-select: none; 
+	-ms-user-select: none;
+	user-select: none; 
+
+    /* Better font rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.waveform .playhead {
+    color: red;
+}
+
+.waveform .splithead {
+    color: yellow;
+}
+
+.waveform.main {
+    color: #333;
+    margin-bottom: 16px;
+}
+
+.chunk .waveform {
+    color: pink;
+    transform: scaleY(2);
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.middle {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%)
+}
+
+header,
+#player {
+    width: 100%;
+    max-width: 512px;
+    margin: 0 auto;
+}
+
+#title {
+    display: inline-block;
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 30px;
+}
+
+.video-react {
+    width: 100%;
+    height: 0px;
+    overflow: hidden;
+}
+
+.video-react.active {
+    height: auto;
+}
+
+.dropzone {
+    width: 448px;
+    margin: 0 auto;
+    margin-top: 48px;
+    margin-bottom: 64px;
+    border-radius: 9px;
+
+    transition: 0.2s height ease-in-out
+    -o-transition: 0.2s height ease-in-out
+    -moz-transition: 0.2s height ease-in-out
+    -webkit-transition: 0.2s height ease-in-out
+}
+
+.dropzone.active {
+    height: 320px;
+    border: 4px dashed #979797;
+}
+
+#editor {
+    width: 100%;
+    display: block;
+}
+
+.icon:before {
+    font-size: 16px;
+    vertical-align: bottom;
+}
+
+.icon {
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+    vertical-align: middle;
+    font-size: 12px;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.icon.active {
+    color: #333;
+}
+
+.icon.error {
+    color: #FF6564;
+}
+
+.toolbar,
+.controls {
+    overflow: auto;
+}
+
+.icon { margin-right: 16px; }
+.icon:last-child { margin-right: 0; }
+
+.icon.rate:before,
+.icon.type:before,
+.icon.time:before,
+.icon.upload:before,
+.icon.volume:before,
+.icon.download:before,
+.icon.captions:before {
+    margin-right: 8px;
+}
+
+#editor {
+	width: 100%;
+	padding: 0 32px;
+    margin-top: 32px;
+	white-space: nowrap;
+	overflow-x: scroll;
+}
+
+.chunk {
+    position: relative;
+	display: inline-block;
+	margin-right: 32px;
+}
+
+.chunk:last-child {
+	margin-right: 0;
+}
+
+.chunk .waveform {
+    margin-top: 32px;
+    margin-bottom: 16px;
+}
+
+.chunk .data .start { float: left; }
+.chunk .data .end { float: right; }
+
+.chunk .data {
+    overflow: auto;
+    padding-top: 5px;
+    margin-bottom: 6px;
+}
+
+.chunk .data span {
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: -1px;
+}
+
+.chunk textarea {
+    width: 100%;
+    font-weight: 600;
+}
+
+.chunk .delete,
+.chunk .handle,
+.chunk .sidehandle {
+    position: absolute;
+}
+
+.chunk .handle,
+.chunk .sidehandle { 
+    color: #ddd;
+}
+
+.chunk .delete {
+    color: #FF6564;
+}
+
+.chunk .icon {
+    margin-right: 0;
+}
+
+.chunk .handle {
+    top: 36px;
+    cursor: col-resize;
+}
+
+.chunk .handle:before {
+    font-size: 26px;
+}
+
+.chunk .sidehandle {
+    cursor: grabbing;
+}
+
+.chunk .delete:before,
+.chunk .sidehandle:before {
+    font-size: 10px;
+}
+
+.chunk .handle.start {
+    left: -12px;
+}
+
+.chunk .handle.end {
+    right: -12px;
+}
+
+.chunk .handle.delete {
+    top: 0;
+    left: 0;
+}
+
+.chunk .sidehandle.move {
+    top: 86px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+

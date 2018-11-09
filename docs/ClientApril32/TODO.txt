@@ -1,0 +1,15 @@
+Need to display the generated SRT file to the right of the interface
+Need to highlight current chunk
+Need to make sure the current chunk is always in the scroll view
+Need to add playback controls: play, pause, next chunk, last chunk, repeat,
+change speed, mode (see below)
+Clicking on a chunk should take you there in the video
+
+MODES
+Text mode: input text
+Time mode: trim, join, split, delete (show visible handles for these things)
+
+Make it so the inactive chunks are opaque
+
+Remove the join functionality
+Implement split functionality

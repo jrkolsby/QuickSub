@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desktop" transform="translate(-659.000000, -96.000000)" fill="#333333" fill-rule="nonzero">
+            <g id="Main-Menu" transform="translate(256.000000, 96.000000)">
+                <path d="M415,8 C414.268,8 413.59,7.789 413,7.445 L413,14 L413,16 L411,16 L405,16 L403,16 L403,14 L403,4 C403,1.791 404.791,0 407,0 L415,0 C417.209,0 419,1.791 419,4 C419,6.209 417.209,8 415,8 Z M407,2 C405.896,2 405,2.896 405,4 L405,14 L411,14 L411,4 C411,3.268 411.211,2.591 411.555,2 L407,2 Z M415,2 C413.896,2 413,2.896 413,4 C413,5.104 413.896,6 415,6 C416.104,6 417,5.104 417,4 C417,2.896 416.104,2 415,2 Z M406,12 L410,12 L410,13 L406,13 L406,12 Z M406,9 L410,9 L410,10 L406,10 L406,9 Z M406,6 L410,6 L410,7 L406,7 L406,6 Z M406,3 L410,3 L410,4 L406,4 L406,3 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>
