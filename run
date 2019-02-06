@@ -1,0 +1,13 @@
+#!/bin/bash
+
+HOME=$(dirname "$0")
+SCRIPTS="$HOME/scripts/"
+MATCHES=$(ls -1a $SCRIPTS | grep "${1:-noscript}$" | wc -l)
+
+if [ $MATCHES -gt 0 ]; then
+    echo "running ${SCRIPTS}${1}"
+    source "${SCRIPTS}${1}"
+else 
+    echo "please choose from:"
+    ls -1 ./scripts/
+fi

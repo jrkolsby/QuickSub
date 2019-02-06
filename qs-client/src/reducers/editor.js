@@ -22,7 +22,7 @@ let defaultState = {
     joinChunkIndex: 0,
 
     // DEMO
-    //...response.payload,
+    ...response.payload,
 }
 
 const editor = (state=defaultState, action) => {

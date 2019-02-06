@@ -1,0 +1,2 @@
+docker build -t qs-client ./qs-client
+docker build -t qs-server ./qs-server

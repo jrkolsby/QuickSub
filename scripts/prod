@@ -1,0 +1,4 @@
+( cd ./qs-client && yarn install )
+( cd ./qs-server && yarn install )
+docker run --rm --name qs-client-prod qs-client
+docker run --rm --name qs-server-prod qs-server
